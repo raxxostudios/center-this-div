@@ -1,5 +1,6 @@
 import { getDb } from '@/lib/db';
 import { headers } from 'next/headers';
+import { verifyChallenge } from '@/lib/anticheat';
 
 // Simple in-memory rate limit (per-IP, 1 per 2 seconds)
 const lastSubmit = new Map<string, number>();
@@ -34,24 +35,31 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    const { deviationX, deviationY } = body;
+    const { deviationX, deviationY, token, moveCount } = body;
 
     if (typeof deviationX !== 'number' || typeof deviationY !== 'number') {
       return Response.json({ error: 'Invalid deviation values' }, { status: 400 });
     }
 
-    // Euclidean distance
-    const deviation = Math.sqrt(deviationX * deviationX + deviationY * deviationY);
-
-    // Anti-cheat: reject submissions below the success threshold itself.
-    // If deviation < 0.0001px, the game considers it "centered" which is
-    // supposed to be impossible. Only API abuse can produce this.
-    if (deviation < 0.0001) {
+    // Anti-cheat: verify gameplay proof (HMAC-signed challenge token + pointer moves)
+    // Without a valid token from /api/challenge + real drag movements, no submission.
+    if (!token || typeof moveCount !== 'number') {
       return Response.json(
-        { error: "418: I'm a teapot. Nice try.", teapot: true },
+        { error: "418: I'm a teapot. Where's your gameplay proof?", teapot: true },
         { status: 418 }
       );
     }
+
+    const check = await verifyChallenge(token, moveCount);
+    if (!check.valid) {
+      return Response.json(
+        { error: `418: I'm a teapot. (${check.reason})`, teapot: true },
+        { status: 418 }
+      );
+    }
+
+    // Euclidean distance
+    const deviation = Math.sqrt(deviationX * deviationX + deviationY * deviationY);
 
     const sql = getDb();
 
