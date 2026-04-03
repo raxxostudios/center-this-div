@@ -21,7 +21,7 @@ export async function GET() {
       SELECT deviation_px, deviation_x, deviation_y, submitted_at, region
       FROM center_attempts
       ORDER BY submitted_at DESC
-      LIMIT 50
+      LIMIT 100
     `;
 
     return Response.json({

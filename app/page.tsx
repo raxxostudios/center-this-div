@@ -957,6 +957,14 @@ export default function CenterDivChallenge() {
   const [teapot, setTeapot] = useState(false);
   const teapotClicks = useRef(0);
 
+  // Dev-only: ?teapot or ?nuke URL params to preview anti-cheat screens
+  const [devTeapot, setDevTeapot] = useState<'teapot' | 'nuke' | null>(null);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('nuke')) setDevTeapot('nuke');
+    else if (params.has('teapot')) setDevTeapot('teapot');
+  }, []);
+
   useEffect(() => {
     const saved = localStorage.getItem('ctd-theme');
     if (saved === 'light') setLightMode(true);
@@ -1118,20 +1126,23 @@ export default function CenterDivChallenge() {
             {/* Radar sweep */}
             <div className="radar-sweep" />
 
-            {/* Player blips from recent attempts */}
+            {/* Player blips from last 100 attempts - amplified so convergence is visible */}
             {game.targetRef.current && game.globalStats.recentAttempts.map((a, i) => {
               const rect = game.targetRef.current!.getBoundingClientRect();
               const cx = rect.width / 2;
               const cy = rect.height / 2;
-              // Clamp blip positions to stay within target area
-              const bx = Math.max(8, Math.min(rect.width - 8, cx + a.deviationX));
-              const by = Math.max(8, Math.min(rect.height - 8, cy + a.deviationY));
-              const age = (Date.now() - new Date(a.time).getTime()) / 60000; // minutes
-              const opacity = Math.max(0.15, 1 - age / 5); // fade over 5 minutes
+              // Amplify small deviations so the scatter pattern is visible
+              // Log scale: 1px deviation = ~80px on screen, 0.04px = ~40px
+              const amplify = (v: number) => Math.sign(v) * Math.log1p(Math.abs(v) * 50) * 40;
+              const bx = Math.max(4, Math.min(rect.width - 4, cx + amplify(a.deviationX)));
+              const by = Math.max(4, Math.min(rect.height - 4, cy + amplify(a.deviationY)));
+              const age = (Date.now() - new Date(a.time).getTime()) / 60000;
+              const opacity = Math.max(0.12, 1 - age / 10); // fade over 10 minutes
+              const isRecent = age < 0.5; // last 30 seconds
               return (
                 <div
                   key={i}
-                  className="radar-blip"
+                  className={`radar-blip ${isRecent ? 'radar-blip-new' : ''}`}
                   style={{
                     left: `${bx}px`,
                     top: `${by}px`,
@@ -1343,6 +1354,26 @@ export default function CenterDivChallenge() {
           bestThisSession={game.bestThisSession}
           targetWidth={game.targetRef.current?.getBoundingClientRect().width || 800}
           onTeapot={() => setTeapot(true)}
+        />
+      )}
+
+      {/* Dev preview: ?teapot or ?nuke in URL */}
+      {devTeapot && (
+        <ResultOverlay
+          result={{
+            rank: 0, totalAttempts: 0, bestEver: 0,
+            yourDeviation: 0.000042, yourDeviationX: 0.00003, yourDeviationY: 0.00003,
+            success: false, percentile: 0, teapot: true,
+            nuked: devTeapot === 'nuke',
+            strike: devTeapot === 'nuke' ? 3 : 2,
+            maxStrikes: 3,
+          }}
+          onReset={() => setDevTeapot(null)}
+          attemptCount={1}
+          elapsedSeconds={0}
+          bestThisSession={999}
+          targetWidth={800}
+          onTeapot={() => {}}
         />
       )}
     </div>
