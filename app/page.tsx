@@ -1207,7 +1207,7 @@ export default function CenterDivChallenge() {
       {/* FOOTER */}
       <footer className="footer-line">
         <div className="footer-left">
-          <a href="https://raxxo.studio" target="_blank" rel="noopener noreferrer" className="footer-link">
+          <a href="https://raxxo.shop" target="_blank" rel="noopener noreferrer" className="footer-link">
             RAXXO Studios
           </a>
           <span className="footer-sep">/</span>
