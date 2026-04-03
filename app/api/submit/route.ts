@@ -40,16 +40,17 @@ export async function POST(req: Request) {
       return Response.json({ error: 'Invalid deviation values' }, { status: 400 });
     }
 
-    // Reject suspiciously perfect submissions (bot/API abuse)
-    if (Math.abs(deviationX) < 0.3 && Math.abs(deviationY) < 0.3) {
+    // Euclidean distance
+    const deviation = Math.sqrt(deviationX * deviationX + deviationY * deviationY);
+
+    // Reject sub-pixel API abuse. 0.001px is below any display's physical resolution
+    // (even 4x DPR bottoms out at 0.25px), so only direct API calls can hit this.
+    if (deviation < 0.001) {
       return Response.json(
-        { error: "418: I'm a teapot. Nice try." },
+        { error: "418: I'm a teapot. Nice try.", teapot: true },
         { status: 418 }
       );
     }
-
-    // Euclidean distance
-    const deviation = Math.sqrt(deviationX * deviationX + deviationY * deviationY);
 
     const sql = getDb();
 
