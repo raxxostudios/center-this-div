@@ -34,6 +34,9 @@ export interface SubmitResult {
   success: boolean;
   percentile: number;
   teapot?: boolean;
+  nuked?: boolean;
+  strike?: number;
+  maxStrikes?: number;
 }
 
 export interface CenterGameState {
@@ -182,6 +185,7 @@ export function useCenterGame(): CenterGameState {
 
       // Anti-cheat teapot: show result with the teapot flag instead of crashing
       if (res.status === 418) {
+        const errData = await res.json().catch(() => ({}));
         setSubmitResult({
           rank: 0,
           totalAttempts: 0,
@@ -192,6 +196,9 @@ export function useCenterGame(): CenterGameState {
           success: false,
           percentile: 0,
           teapot: true,
+          nuked: errData.nuked || false,
+          strike: errData.strike,
+          maxStrikes: errData.maxStrikes,
         });
         setSubmitted(true);
         setAttemptCount((c) => c + 1);
