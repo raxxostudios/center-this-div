@@ -43,9 +43,10 @@ export async function POST(req: Request) {
     // Euclidean distance
     const deviation = Math.sqrt(deviationX * deviationX + deviationY * deviationY);
 
-    // Reject sub-pixel API abuse. 0.001px is below any display's physical resolution
-    // (even 4x DPR bottoms out at 0.25px), so only direct API calls can hit this.
-    if (deviation < 0.001) {
+    // Anti-cheat: reject submissions below the success threshold itself.
+    // If deviation < 0.0001px, the game considers it "centered" which is
+    // supposed to be impossible. Only API abuse can produce this.
+    if (deviation < 0.0001) {
       return Response.json(
         { error: "418: I'm a teapot. Nice try.", teapot: true },
         { status: 418 }
