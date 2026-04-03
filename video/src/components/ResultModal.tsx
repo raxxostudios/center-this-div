@@ -41,7 +41,7 @@ export const ResultModal: React.FC<ResultModalProps> = ({
       {/* Backdrop blur sim */}
       <div
         style={{
-          background: 'rgba(6, 6, 14, 0.92)',
+          background: 'rgba(31, 31, 33, 0.92)',
           border: `1px solid ${tokens.borderStrong}`,
           borderRadius: 20,
           padding: '64px 48px 56px',
