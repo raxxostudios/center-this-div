@@ -1,0 +1,45 @@
+import type { Metadata, Viewport } from 'next';
+import './globals.css';
+
+const siteUrl = 'https://center-this-div.vercel.app';
+
+export const metadata: Metadata = {
+  title: 'Can You Center This Div?',
+  description: 'The most over-engineered centering challenge on the internet. JARVIS-style HUD. Sub-pixel precision. Global leaderboard. 0 successes. Ever.',
+  metadataBase: new URL(siteUrl),
+  openGraph: {
+    title: 'Can You Center This Div?',
+    description: 'Drag a div to the exact center of the screen. Threshold: 0.0001px. Nobody has ever succeeded.',
+    type: 'website',
+    url: siteUrl,
+    siteName: 'DIV//CENTER',
+    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'Can You Center This Div? JARVIS-style HUD with crosshairs, target rings, and a div element slightly off-center.' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Can You Center This Div?',
+    description: 'Sub-pixel precision centering. 0.0001px threshold. 0 global successes. Ever.',
+    images: ['/og-image.png'],
+  },
+  robots: { index: true, follow: true },
+  authors: [{ name: 'RAXXO Studios', url: 'https://raxxo.shop' }],
+};
+
+export const viewport: Viewport = {
+  themeColor: '#06060e',
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <head>
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+      </head>
+      <body>{children}</body>
+    </html>
+  );
+}

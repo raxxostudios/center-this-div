@@ -1,0 +1,11 @@
+node_modules
+.next
+.env
+.env.local
+.vercel
+*.tsbuildinfo
+.env*.local
+
+# Internal docs (not for public repo)
+CAMPAIGN.html
+RELEASE-PLAN.md
