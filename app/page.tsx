@@ -439,36 +439,83 @@ function ResultOverlay({
 
   // 418 Teapot: suspiciously close submission was rejected by anti-cheat
   if (result.teapot) {
+    const isNuked = result.nuked;
+    const strike = result.strike || 0;
+    const maxStrikes = result.maxStrikes || 3;
+
     return (
-      <div className="result-overlay">
-        <div className="result-card">
+      <div className={`result-overlay ${isNuked ? 'teapot-nuked' : ''}`}>
+        <div className={`result-card ${isNuked ? 'teapot-nuke-card' : ''}`}>
           <div className="result-scanline" />
+
+          {/* Exploding teapot emoji shower */}
+          <div className="teapot-explosion" aria-hidden="true">
+            {Array.from({ length: isNuked ? 40 : 12 }).map((_, i) => (
+              <span
+                key={i}
+                className="teapot-particle"
+                style={{
+                  left: `${Math.random() * 100}%`,
+                  animationDelay: `${Math.random() * 0.6}s`,
+                  animationDuration: `${1 + Math.random() * 1.5}s`,
+                  fontSize: `${isNuked ? 20 + Math.random() * 32 : 14 + Math.random() * 18}px`,
+                }}
+              >
+                {isNuked ? (i % 3 === 0 ? '\u{1F4A5}' : i % 3 === 1 ? '\u{2615}' : '\u{1F525}') : '\u{2615}'}
+              </span>
+            ))}
+          </div>
+
           <div className="result-brand">
             <span className="result-brand-name">RAXXO</span>
             <span className="result-brand-sep">//</span>
-            <span className="result-brand-product">DIV CENTER</span>
+            <span className="result-brand-product">ANTI-CHEAT</span>
           </div>
+
           <div className="result-header">
-            <h2 className="result-title glitch" data-text="418: I'M A TEAPOT">418: I&apos;M A TEAPOT</h2>
+            <h2 className="result-title glitch" data-text={isNuked ? 'BANNED' : "418: I'M A TEAPOT"}>
+              {isNuked ? 'BANNED' : <>418: I&apos;M A TEAPOT</>}
+            </h2>
           </div>
+
           <div className="result-hero">
-            <span className="result-hero-value" style={{ fontSize: '1.4rem' }}>Your attempt was suspiciously precise.</span>
+            <span className="result-hero-value" style={{ fontSize: isNuked ? '1.6rem' : '1.4rem', color: isNuked ? 'var(--red)' : undefined }}>
+              {isNuked
+                ? 'You have been IP banned for 1 hour.'
+                : 'The server refuses to brew coffee. It is a teapot.'}
+            </span>
           </div>
-          <div className="result-earth">
-            <div className="result-earth-quote">The server refuses to center your div. It is, permanently, a teapot.</div>
-          </div>
-          <div className="result-verdict">
-            <div className="result-verdict-stats">
-              <span>Deviation: {result.yourDeviation.toFixed(6)}px</span>
-              <span className="result-verdict-sep">|</span>
-              <span>Below anti-cheat threshold</span>
+
+          {/* Strike counter */}
+          {!isNuked && strike > 0 && (
+            <div className="result-earth">
+              <div className="result-earth-header" style={{ color: 'var(--red)' }}>
+                <XCircle size={14} weight="fill" />
+                <span>STRIKE {strike} OF {maxStrikes}</span>
+              </div>
+              <div className="result-earth-quote">
+                {strike >= maxStrikes - 1
+                  ? 'One more and you get nuked. Play the actual game.'
+                  : 'Submissions require real gameplay. No curl, no Postman, no scripts.'}
+              </div>
             </div>
-          </div>
+          )}
+
+          {isNuked && (
+            <div className="result-earth">
+              <div className="result-earth-quote" style={{ color: 'var(--text-2)' }}>
+                You tried to cheat a game that is already impossible to win. Think about that.
+              </div>
+            </div>
+          )}
+
           <div className="result-actions">
-            <button className="result-btn-primary" onClick={onReset}>
-              <ArrowClockwise size={16} weight="bold" />
-              Try Again
-            </button>
+            {!isNuked && (
+              <button className="result-btn-primary" onClick={onReset}>
+                <ArrowClockwise size={16} weight="bold" />
+                Play Fair This Time
+              </button>
+            )}
           </div>
         </div>
       </div>

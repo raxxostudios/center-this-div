@@ -5,6 +5,23 @@ import { verifyChallenge } from '@/lib/anticheat';
 // Simple in-memory rate limit (per-IP, 1 per 2 seconds)
 const lastSubmit = new Map<string, number>();
 
+// Anti-cheat: IP strike counter + ban list
+// 3 strikes = banned for 1 hour
+const strikes = new Map<string, { count: number; lastStrike: number }>();
+const banned = new Map<string, number>(); // IP -> ban expiry timestamp
+const BAN_DURATION = 3600000; // 1 hour
+const MAX_STRIKES = 3;
+
+function addStrike(ip: string, now: number) {
+  const s = strikes.get(ip) || { count: 0, lastStrike: 0 };
+  s.count++;
+  s.lastStrike = now;
+  strikes.set(ip, s);
+  if (s.count >= MAX_STRIKES) {
+    banned.set(ip, now + BAN_DURATION);
+  }
+}
+
 export async function POST(req: Request) {
   try {
     const headerMap = await headers();
@@ -15,8 +32,23 @@ export async function POST(req: Request) {
     const ua = headerMap.get('user-agent') || 'unknown';
     const region = headerMap.get('x-vercel-id')?.split('::')[0] || 'unknown';
 
-    // Rate limit: 1 submission per 2 seconds per IP
     const now = Date.now();
+
+    // Check IP ban first
+    const banExpiry = banned.get(ip);
+    if (banExpiry && now < banExpiry) {
+      const minsLeft = Math.ceil((banExpiry - now) / 60000);
+      return Response.json(
+        { error: `You've been banned for cheating. ${minsLeft}m remaining. Play fair next time.`, teapot: true, nuked: true },
+        { status: 418 }
+      );
+    }
+    if (banExpiry && now >= banExpiry) {
+      banned.delete(ip);
+      strikes.delete(ip);
+    }
+
+    // Rate limit: 1 submission per 2 seconds per IP
     const last = lastSubmit.get(ip) || 0;
     if (now - last < 2000) {
       return Response.json(
@@ -44,16 +76,20 @@ export async function POST(req: Request) {
     // Anti-cheat: verify gameplay proof (HMAC-signed challenge token + pointer moves)
     // Without a valid token from /api/challenge + real drag movements, no submission.
     if (!token || typeof moveCount !== 'number') {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
       return Response.json(
-        { error: "418: I'm a teapot. Where's your gameplay proof?", teapot: true },
+        { error: "418: I'm a teapot. Where's your gameplay proof?", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
 
     const check = await verifyChallenge(token, moveCount);
     if (!check.valid) {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
       return Response.json(
-        { error: `418: I'm a teapot. (${check.reason})`, teapot: true },
+        { error: `418: I'm a teapot. (${check.reason})`, teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
