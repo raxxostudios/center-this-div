@@ -1131,9 +1131,9 @@ export default function CenterDivChallenge() {
               const rect = game.targetRef.current!.getBoundingClientRect();
               const cx = rect.width / 2;
               const cy = rect.height / 2;
-              // Amplify small deviations so the scatter pattern is visible
-              // Log scale: 1px deviation = ~80px on screen, 0.04px = ~40px
-              const amplify = (v: number) => Math.sign(v) * Math.log1p(Math.abs(v) * 50) * 40;
+              // Gentle amplification: close attempts cluster tight, far ones spread naturally
+              // 0.04px -> ~3px on screen, 1px -> ~18px, 10px -> ~42px, 100px -> ~80px
+              const amplify = (v: number) => Math.sign(v) * Math.log1p(Math.abs(v) * 3) * 18;
               const bx = Math.max(4, Math.min(rect.width - 4, cx + amplify(a.deviationX)));
               const by = Math.max(4, Math.min(rect.height - 4, cy + amplify(a.deviationY)));
               const age = (Date.now() - new Date(a.time).getTime()) / 60000;
