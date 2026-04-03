@@ -109,8 +109,8 @@ function generateShareCard(opts: {
 
     // Background
     const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
-    bgGrad.addColorStop(0, '#0a0a16');
-    bgGrad.addColorStop(0.5, '#06060e');
+    bgGrad.addColorStop(0, '#242426');
+    bgGrad.addColorStop(0.5, '#1f1f21');
     bgGrad.addColorStop(1, '#08081a');
     ctx.fillStyle = bgGrad;
     ctx.fillRect(0, 0, 1080, 1080);
