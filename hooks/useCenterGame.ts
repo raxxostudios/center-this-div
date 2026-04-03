@@ -33,6 +33,7 @@ export interface SubmitResult {
   yourDeviationY: number;
   success: boolean;
   percentile: number;
+  teapot?: boolean;
 }
 
 export interface CenterGameState {
@@ -168,6 +169,24 @@ export function useCenterGame(): CenterGameState {
 
       if (res.status === 429) {
         setIsSubmitting(false);
+        return;
+      }
+
+      // Anti-cheat teapot: show result with the teapot flag instead of crashing
+      if (res.status === 418) {
+        setSubmitResult({
+          rank: 0,
+          totalAttempts: 0,
+          bestEver: 0,
+          yourDeviation: Math.sqrt(deviationX * deviationX + deviationY * deviationY),
+          yourDeviationX: deviationX,
+          yourDeviationY: deviationY,
+          success: false,
+          percentile: 0,
+          teapot: true,
+        });
+        setSubmitted(true);
+        setAttemptCount((c) => c + 1);
         return;
       }
 

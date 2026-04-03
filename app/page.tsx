@@ -437,6 +437,44 @@ function ResultOverlay({
     }
   };
 
+  // 418 Teapot: suspiciously close submission was rejected by anti-cheat
+  if (result.teapot) {
+    return (
+      <div className="result-overlay">
+        <div className="result-card">
+          <div className="result-scanline" />
+          <div className="result-brand">
+            <span className="result-brand-name">RAXXO</span>
+            <span className="result-brand-sep">//</span>
+            <span className="result-brand-product">DIV CENTER</span>
+          </div>
+          <div className="result-header">
+            <h2 className="result-title glitch" data-text="418: I'M A TEAPOT">418: I&apos;M A TEAPOT</h2>
+          </div>
+          <div className="result-hero">
+            <span className="result-hero-value" style={{ fontSize: '1.4rem' }}>Your attempt was suspiciously precise.</span>
+          </div>
+          <div className="result-earth">
+            <div className="result-earth-quote">The server refuses to center your div. It is, permanently, a teapot.</div>
+          </div>
+          <div className="result-verdict">
+            <div className="result-verdict-stats">
+              <span>Deviation: {result.yourDeviation.toFixed(6)}px</span>
+              <span className="result-verdict-sep">|</span>
+              <span>Below anti-cheat threshold</span>
+            </div>
+          </div>
+          <div className="result-actions">
+            <button className="result-btn-primary" onClick={onReset}>
+              <ArrowClockwise size={16} weight="bold" />
+              Try Again
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="result-overlay">
       <div className="result-card">
