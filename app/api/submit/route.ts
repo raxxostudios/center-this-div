@@ -4,6 +4,8 @@ import { verifyChallenge } from '@/lib/anticheat';
 
 // Simple in-memory rate limit (per-IP, 1 per 2 seconds)
 const lastSubmit = new Map<string, number>();
+let submitCount = 0; // triggers cleanup every 50 submissions
+const HUMAN_FLOOR = 0.01; // px - below this is physically impossible
 
 // Anti-cheat: IP strike counter + ban list
 // 3 strikes = banned for 1 hour
@@ -113,6 +115,20 @@ export async function POST(req: Request) {
         best_deviation = LEAST(best_deviation, ${deviation})
       WHERE id = 'global'
     `;
+
+    // Auto-cleanup: every 50 submissions, nuke sus entries
+    submitCount++;
+    if (submitCount % 50 === 0) {
+      await sql`DELETE FROM center_attempts WHERE deviation_px < ${HUMAN_FLOOR}`;
+      const cleanCount = await sql`SELECT COUNT(*) as cnt FROM center_attempts`;
+      const cleanBest = await sql`SELECT MIN(deviation_px) as best FROM center_attempts`;
+      await sql`
+        UPDATE center_stats
+        SET total_attempts = ${Number(cleanCount[0].cnt)},
+            best_deviation = ${cleanBest[0].best || 999}
+        WHERE id = 'global'
+      `;
+    }
 
     // Get rank (how many attempts were closer)
     const rankResult = await sql`
