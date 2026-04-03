@@ -1,8 +1,8 @@
 export const tokens = {
-  bg: '#06060e',
-  bgWarm: '#0a0a16',
-  surface: 'rgba(16, 16, 32, 0.7)',
-  surfaceSolid: '#0e0e1a',
+  bg: '#1f1f21',
+  bgWarm: '#242426',
+  surface: 'rgba(31, 31, 33, 0.7)',
+  surfaceSolid: '#1f1f21',
   border: 'rgba(227, 252, 2, 0.08)',
   borderStrong: 'rgba(227, 252, 2, 0.16)',
   text: '#F5F5F7',
