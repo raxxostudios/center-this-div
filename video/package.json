@@ -1,0 +1,23 @@
+{
+  "name": "center-this-div-video",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render:tiktok": "remotion render src/index.ts TikTok out/tiktok.mp4",
+    "render:shorts": "remotion render src/index.ts Shorts out/shorts.mp4",
+    "render:reel": "remotion render src/index.ts Reel out/reel.mp4",
+    "render:all": "npm run render:tiktok && npm run render:shorts && npm run render:reel"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.242",
+    "@remotion/player": "4.0.242",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "remotion": "4.0.242"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.0",
+    "typescript": "^5.7.0"
+  }
+}
