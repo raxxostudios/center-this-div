@@ -23,6 +23,9 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   authors: [{ name: 'RAXXO Studios', url: 'https://raxxo.shop' }],
+  keywords: ['center div', 'CSS game', 'centering challenge', 'web game', 'pixel precision', 'CSS centering', 'developer game', 'JARVIS HUD', 'impossible game', 'leaderboard'],
+  alternates: { canonical: siteUrl },
+  category: 'game',
 };
 
 export const viewport: Viewport = {
@@ -39,7 +42,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
       </head>
-      <body>{children}</body>
+      <body>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              '@context': 'https://schema.org',
+              '@type': 'WebApplication',
+              name: 'Can You Center This Div?',
+              url: siteUrl,
+              description: 'A precision CSS centering game with a 0.0001px success threshold. JARVIS-style HUD, global leaderboard, Earth Scale distance mapping.',
+              applicationCategory: 'Game',
+              operatingSystem: 'Any',
+              offers: { '@type': 'Offer', price: '0', priceCurrency: 'EUR' },
+              author: { '@type': 'Organization', name: 'RAXXO Studios', url: 'https://raxxo.shop' },
+              image: `${siteUrl}/og-image.png`,
+            }),
+          }}
+        />
+        {children}
+      </body>
     </html>
   );
 }

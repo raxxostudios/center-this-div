@@ -1,0 +1,32 @@
+# Can You Center This Div?
+
+> A precision CSS centering game with a 0.0001px success threshold. Nobody has ever won.
+
+## What is this?
+
+An interactive web game where you drag a div element to the exact center of the screen. The success threshold is 0.0001 pixels, which is 5,000 times smaller than a single pixel. The global success count is 0 and always will be.
+
+## Key Features
+
+- JARVIS-style HUD with real-time deviation tracking to 6 decimal places
+- Earth Scale: maps your pixel deviation to real-world distance (e.g. 3px = 3km)
+- Global leaderboard with persistent scores (Neon Postgres)
+- 2,500+ contextual failure quotes across 164 distance tiers
+- Anti-cheat system with HMAC-signed gameplay proof
+- HTTP 418 "I'm a teapot" easter egg
+- Share cards with auto-generated OG images
+
+## Tech Stack
+
+Next.js 16, React 19, TypeScript, Neon Postgres, Vercel, pure CSS animations
+
+## Links
+
+- Play: https://center-this-div.vercel.app
+- Source: https://github.com/raxxostudios/center-this-div
+- Shop: https://raxxo.shop/products/can-you-center-this-div
+- Blog: https://raxxo.shop/blogs/lab/can-you-center-this-div-our-first-game-is-live
+
+## Built by
+
+RAXXO Studios - https://raxxo.shop
