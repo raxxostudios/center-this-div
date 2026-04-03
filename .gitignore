@@ -9,3 +9,6 @@ node_modules
 # Internal docs (not for public repo)
 CAMPAIGN.html
 RELEASE-PLAN.md
+
+# Social share images (campaign assets, not source code)
+social-*.png
