@@ -97,6 +97,8 @@ export function useCenterGame(): CenterGameState {
   const dragOffset = useRef({ x: 0, y: 0 });
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const startTime = useRef<number>(Date.now());
+  const challengeToken = useRef<string>('');
+  const pointerMoveCount = useRef<number>(0);
 
   // Calculate deviation from true center
   const updateDeviation = useCallback((x: number, y: number) => {
@@ -137,6 +139,7 @@ export function useCenterGame(): CenterGameState {
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     if (!isDragging || !targetRef.current) return;
     e.preventDefault();
+    pointerMoveCount.current++;
     const rect = targetRef.current.getBoundingClientRect();
     const x = e.clientX - rect.left - dragOffset.current.x;
     const y = e.clientY - rect.top - dragOffset.current.y;
@@ -164,7 +167,12 @@ export function useCenterGame(): CenterGameState {
       const res = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deviationX, deviationY }),
+        body: JSON.stringify({
+          deviationX,
+          deviationY,
+          token: challengeToken.current,
+          moveCount: pointerMoveCount.current,
+        }),
       });
 
       if (res.status === 429) {
@@ -209,6 +217,12 @@ export function useCenterGame(): CenterGameState {
     setSubmitted(false);
     setSubmitResult(null);
     setHasPlaced(false);
+    pointerMoveCount.current = 0;
+    // Fresh challenge token for next attempt
+    fetch('/api/challenge')
+      .then((r) => r.json())
+      .then((d) => { challengeToken.current = d.token; })
+      .catch(() => {});
     if (targetRef.current) {
       const rect = targetRef.current.getBoundingClientRect();
       // Place div at random offset, at least 60px from center
@@ -294,9 +308,13 @@ export function useCenterGame(): CenterGameState {
     return () => cancelAnimationFrame(raf);
   }, [updateDeviation]);
 
-  // Init DB tables on mount
+  // Init DB tables + fetch anti-cheat challenge token on mount
   useEffect(() => {
     fetch('/api/init', { method: 'POST' }).catch(() => {});
+    fetch('/api/challenge')
+      .then((r) => r.json())
+      .then((d) => { challengeToken.current = d.token; })
+      .catch(() => {});
   }, []);
 
   return {
