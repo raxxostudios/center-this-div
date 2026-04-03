@@ -26,14 +26,13 @@ export async function GET() {
       RETURNING id
     `;
 
-    // Recalculate stats if we cleaned anything
+    // Only fix best_deviation if we cleaned something. Never touch total_attempts
+    // (total should only go up, never drop when cheater entries are removed)
     if (nuked.length > 0) {
       const best = await sql`SELECT MIN(deviation_px) as best FROM center_attempts`;
-      const count = await sql`SELECT COUNT(*) as cnt FROM center_attempts`;
       await sql`
         UPDATE center_stats
-        SET best_deviation = ${best[0].best || 999},
-            total_attempts = ${Number(count[0].cnt)}
+        SET best_deviation = ${best[0].best || 999}
         WHERE id = 'global'
       `;
     }
