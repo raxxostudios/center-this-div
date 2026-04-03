@@ -957,14 +957,6 @@ export default function CenterDivChallenge() {
   const [teapot, setTeapot] = useState(false);
   const teapotClicks = useRef(0);
 
-  // Dev-only: ?teapot or ?nuke URL params to preview anti-cheat screens
-  const [devTeapot, setDevTeapot] = useState<'teapot' | 'nuke' | null>(null);
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    if (params.has('nuke')) setDevTeapot('nuke');
-    else if (params.has('teapot')) setDevTeapot('teapot');
-  }, []);
-
   useEffect(() => {
     const saved = localStorage.getItem('ctd-theme');
     if (saved === 'light') setLightMode(true);
@@ -1357,25 +1349,6 @@ export default function CenterDivChallenge() {
         />
       )}
 
-      {/* Dev preview: ?teapot or ?nuke in URL */}
-      {devTeapot && (
-        <ResultOverlay
-          result={{
-            rank: 0, totalAttempts: 0, bestEver: 0,
-            yourDeviation: 0.000042, yourDeviationX: 0.00003, yourDeviationY: 0.00003,
-            success: false, percentile: 0, teapot: true,
-            nuked: devTeapot === 'nuke',
-            strike: devTeapot === 'nuke' ? 3 : 2,
-            maxStrikes: 3,
-          }}
-          onReset={() => setDevTeapot(null)}
-          attemptCount={1}
-          elapsedSeconds={0}
-          bestThisSession={999}
-          targetWidth={800}
-          onTeapot={() => {}}
-        />
-      )}
     </div>
   );
 }
