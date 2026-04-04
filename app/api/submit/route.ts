@@ -97,6 +97,26 @@ export async function POST(req: Request) {
     // Euclidean distance
     const deviation = Math.sqrt(deviationX * deviationX + deviationY * deviationY);
 
+    // Anti-cheat: reject exact zero (impossible via real pointer events)
+    if (deviation === 0 || (deviationX === 0 && deviationY === 0)) {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
+      return Response.json(
+        { error: "418: I'm a teapot. Exact zero? Really?", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { status: 418 }
+      );
+    }
+
+    // Anti-cheat: reject below human floor (0.02px is below what pointer events can produce)
+    if (deviation < 0.02) {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
+      return Response.json(
+        { error: "418: I'm a teapot. Sub-pixel perfection isn't human.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { status: 418 }
+      );
+    }
+
     // Anti-cheat: reject suspiciously round deviations
     // Real browser getBoundingClientRect produces messy floating point (e.g. 3.7265625)
     // Fabricated values are typically round numbers (0.01, 0.1, 1.0, etc.)
