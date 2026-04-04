@@ -180,7 +180,7 @@ export const Shorts: React.FC = () => {
         <>
           <Leaderboard showAt={600} />
           <TextOverlay
-            text="The closest is 0.89px. Still 17,000x over the threshold."
+            text="The closest is 0.02px. Still 200x over the threshold."
             showAt={660}
             hideAt={745}
             position="bottom"
