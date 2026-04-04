@@ -39,7 +39,7 @@ export async function POST(req: Request) {
     if (banExpiry && now < banExpiry) {
       const minsLeft = Math.ceil((banExpiry - now) / 60000);
       return Response.json(
-        { error: `You've been banned for cheating. ${minsLeft}m remaining. Play fair next time.`, teapot: true, nuked: true },
+        { error: `Your submissions looked a little too perfect. Cool off for ${minsLeft}m. The div will wait.`, teapot: true, nuked: true },
         { status: 418 }
       );
     }
@@ -79,7 +79,7 @@ export async function POST(req: Request) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
-        { error: "418: I'm a teapot. Where's your gameplay proof?", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { error: "Something went wrong with your session. Refresh and try again.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
-        { error: `418: I'm a teapot. (${check.reason})`, teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { error: "That attempt didn't quite register. Give it another shot.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
@@ -102,7 +102,7 @@ export async function POST(req: Request) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
-        { error: "418: I'm a teapot. Exact zero? Really?", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { error: "Mathematically perfect. Suspiciously perfect. Try dragging it yourself.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
@@ -112,7 +112,7 @@ export async function POST(req: Request) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
-        { error: "418: I'm a teapot. Sub-pixel perfection isn't human.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { error: "That's closer than any screen can render. Impressive, but suspicious.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
@@ -142,7 +142,7 @@ export async function POST(req: Request) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
-        { error: "418: I'm a teapot. Those numbers look a little too clean.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { error: "Those numbers look a little too round. Browsers are messier than that.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
@@ -165,7 +165,7 @@ export async function POST(req: Request) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
-        { error: "418: I'm a teapot. Déjà vu? Same score 3 times is suspicious.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { error: "Same score again? The universe is rarely that consistent.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
         { status: 418 }
       );
     }
