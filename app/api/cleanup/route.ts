@@ -1,11 +1,12 @@
 import { getDb } from '@/lib/db';
 import { headers } from 'next/headers';
 
-// Auto-cleanup: nuke statistically impossible entries
+// Auto-cleanup: nuke statistically impossible and suspiciously uniform entries
 // Runs via Vercel cron every 10 minutes (Pro plan)
-// Human floor: ~0.03px on high-DPI. 0.01px is generous but impossible via pointer events.
+// Human floor: ~0.03px on high-DPI. Real getBoundingClientRect returns binary fractions
+// (multiples of 1/64 or 1/128), never clean decimals like 0.01000.
 
-const HUMAN_FLOOR = 0.01;
+const HUMAN_FLOOR = 0.02;
 
 export async function GET() {
   const headerMap = await headers();
