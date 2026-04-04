@@ -1241,6 +1241,10 @@ export default function CenterDivChallenge() {
               )}
             </button>
           </div>
+          <p className="anticheat-notice">
+            <Eye size={10} weight="fill" />
+            Submissions are pattern-analyzed. Fabricated values get the teapot. The cron learns.
+          </p>
         </div>
 
         {/* Right Panel: Leaderboard + Feed */}

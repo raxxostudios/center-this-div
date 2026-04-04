@@ -997,6 +997,25 @@ h1.nav-title,
   box-shadow: none;
 }
 
+.anticheat-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.5px;
+  color: var(--text-3, rgba(245, 245, 247, 0.25));
+  margin-top: 8px;
+  opacity: 0.6;
+  transition: opacity 0.3s;
+}
+
+.anticheat-notice:hover {
+  opacity: 1;
+  color: var(--red, #ff4444);
+}
+
 .btn-share {
   display: flex;
   align-items: center;
