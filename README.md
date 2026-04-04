@@ -80,23 +80,16 @@ Tables are created automatically on first load.
 
 | Route | Method | Description |
 |---|---|---|
-| `/api/init` | POST | Creates tables (idempotent) |
-| `/api/challenge` | GET | Returns HMAC-signed gameplay token |
 | `/api/submit` | POST | Records attempt, returns rank + percentile |
 | `/api/leaderboard` | GET | Top 20 closest attempts all-time |
 | `/api/stats` | GET | Global counters + recent attempts |
-| `/api/cleanup` | GET | Cron-triggered leaderboard cleanup (every 10 min) |
 | `/api/teapot` | GET | HTTP 418 |
 
 ## Anti-Cheat
 
-Three layers, all returning HTTP 418 (I'm a Teapot):
+Multiple server-side layers. Fabricated submissions get HTTP 418 (I'm a Teapot). Repeat offenders get the exploding teapot. A cleanup cron runs every 10 minutes to keep the leaderboard fair. It learns.
 
-- **HMAC gameplay proof.** Every submission requires a signed challenge token from `/api/challenge` plus a minimum pointer move count. Direct API calls without playing get the teapot.
-- **Pattern analysis.** Exact zeros, sub-0.02px submissions, suspiciously round mantissas, and duplicate scores from the same browser are all rejected and earn strikes. 3 strikes = 1 hour IP ban with exploding teapot animation.
-- **Cleanup cron (every 10 min).** Nukes entries below the 0.02px human floor, caps any single browser to 3 entries in the top 50 and 10 entries in the sub-0.1px range, and removes single-axis zero hits. The cron learns.
-
-Rate limited: 1 submission per 2 seconds per IP. Browser zoom is disabled during gameplay.
+Rate limited. Zoom disabled during gameplay.
 
 ## Earth Scale
 

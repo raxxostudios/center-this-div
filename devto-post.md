@@ -55,12 +55,7 @@ Dead simple stack, wildly overengineered execution:
 - **Pointer Events API** with drag offset tracking for sub-pixel precision
 - **Canvas API** for generating share card images
 
-The entire game logic lives in a single custom hook (`useCenterGame`). Four API routes handle everything:
-
-- `POST /api/submit` records your attempt, calculates rank, returns percentile (rate limited, anti-cheat rejects deviations < 0.3px)
-- `GET /api/leaderboard` returns top 20 all-time
-- `GET /api/stats` returns global counters + recent 50 attempts
-- `GET /api/teapot` returns HTTP 418
+The entire game logic lives in a single custom hook (`useCenterGame`). API routes handle submissions, leaderboard, stats, and a cron cleanup that keeps the leaderboard fair.
 
 ## How I Built It
 
@@ -72,7 +67,7 @@ The Earth Scale converts pixel deviation to kilometers using `deviationPx * (40,
 
 The 418 easter egg renders a Utah teapot as a 3D point cloud (~2,500 particles) with full drag rotation, scroll zoom, pinch zoom on mobile, and steam particles rising from the spout. All pure canvas, no 3D libraries.
 
-Anti-cheat: submissions with both X and Y deviation below 0.3px are rejected with HTTP 418 ("I'm a teapot. Nice try."). The success counter never increments. It is hardcoded to stay at 0 forever.
+Anti-cheat runs multiple layers server-side. Fabricated submissions get HTTP 418. The success counter never increments. It will stay at 0 forever.
 
 ## Prize Category
 
