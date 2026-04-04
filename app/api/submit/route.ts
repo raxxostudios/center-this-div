@@ -154,7 +154,7 @@ export async function POST(req: Request) {
     const recentFromIp = await sql`
       SELECT deviation_px FROM center_attempts
       WHERE user_agent = ${ua}
-      ORDER BY created_at DESC
+      ORDER BY submitted_at DESC
       LIMIT 5
     `;
     const roundedDev = Math.round(deviation * 10000);
