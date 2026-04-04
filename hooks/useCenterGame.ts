@@ -255,7 +255,7 @@ export function useCenterGame(): CenterGameState {
     return `${emoji} I got ${dev}px from center in "Can You Center This Div?"\n\nAttempt #${attemptCount} | Best: ${bestThisSession.toFixed(6)}px\nGlobal successes: 0. Ever.\n\n${url}`;
   }, [totalDeviation, attemptCount, bestThisSession]);
 
-  // Poll global stats every 3 seconds
+  // Poll global stats every 15 seconds (saves Neon transfer bandwidth)
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -273,7 +273,7 @@ export function useCenterGame(): CenterGameState {
     };
 
     fetchStats();
-    const interval = setInterval(fetchStats, 3000);
+    const interval = setInterval(fetchStats, 15000);
     return () => clearInterval(interval);
   }, []);
 
