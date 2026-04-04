@@ -159,7 +159,7 @@ export async function POST(req: Request) {
     `;
     const roundedDev = Math.round(deviation * 10000);
     const dupeCount = recentFromIp.filter(
-      (r: { deviation_px: number }) => Math.round(Number(r.deviation_px) * 10000) === roundedDev
+      (r) => Math.round(Number(r.deviation_px) * 10000) === roundedDev
     ).length;
     if (dupeCount >= 2) {
       addStrike(ip, now);
