@@ -323,20 +323,32 @@ export function useCenterGame(): CenterGameState {
       .then((d) => { challengeToken.current = d.token; })
       .catch(() => {});
 
-    // Block browser zoom (Ctrl+scroll, Ctrl+plus/minus, pinch)
+    // Block browser zoom on the game area (Ctrl+scroll, Ctrl+plus/minus)
+    // Teapot 3D scene has its own zoom which stays enabled
     const blockZoom = (e: WheelEvent) => {
-      if (e.ctrlKey || e.metaKey) e.preventDefault();
+      const target = e.target as HTMLElement;
+      const inTeapot = target.closest('.teapot-modal');
+      if ((e.ctrlKey || e.metaKey) && !inTeapot) e.preventDefault();
     };
     const blockKeyZoom = (e: KeyboardEvent) => {
       if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
         e.preventDefault();
       }
     };
+    // Block right-click inspect on game area (makes DevTools spoofing slightly harder)
+    const blockContext = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (target.closest('.target-area') || target.closest('.draggable-div')) {
+        e.preventDefault();
+      }
+    };
     document.addEventListener('wheel', blockZoom, { passive: false });
     document.addEventListener('keydown', blockKeyZoom);
+    document.addEventListener('contextmenu', blockContext);
     return () => {
       document.removeEventListener('wheel', blockZoom);
       document.removeEventListener('keydown', blockKeyZoom);
+      document.removeEventListener('contextmenu', blockContext);
     };
   }, []);
 
