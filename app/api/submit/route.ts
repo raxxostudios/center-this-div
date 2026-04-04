@@ -97,7 +97,58 @@ export async function POST(req: Request) {
     // Euclidean distance
     const deviation = Math.sqrt(deviationX * deviationX + deviationY * deviationY);
 
+    // Anti-cheat: reject suspiciously round deviations
+    // Real browser getBoundingClientRect produces messy floating point (e.g. 3.7265625)
+    // Fabricated values are typically round numbers (0.01, 0.1, 1.0, etc.)
+    const devStr = deviation.toFixed(10);
+    const xStr = Math.abs(deviationX).toFixed(10);
+    const yStr = Math.abs(deviationY).toFixed(10);
+
+    // Count trailing zeros after decimal point - real browser values have noisy mantissas
+    const trailingZeros = (s: string) => {
+      const decimal = s.split('.')[1] || '';
+      let count = 0;
+      for (let i = decimal.length - 1; i >= 0; i--) {
+        if (decimal[i] === '0') count++;
+        else break;
+      }
+      return count;
+    };
+
+    // If Euclidean distance has 5+ trailing zeros AND both axes are suspiciously clean, it's fabricated
+    // Real values from getBoundingClientRect: 3.7265625, 0.048828125, 12.34375 (binary fractions)
+    // Fabricated: 0.01000000, 0.10000000, 1.00000000
+    if (trailingZeros(devStr) >= 5 && trailingZeros(xStr) >= 5 && trailingZeros(yStr) >= 5 && deviation < 1.0) {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
+      return Response.json(
+        { error: "418: I'm a teapot. Those numbers look a little too clean.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { status: 418 }
+      );
+    }
+
+    // Anti-cheat: check for duplicate deviation pattern from same IP
+    // If this IP submitted the exact same deviation (to 4 decimal places) in their last 5 attempts, reject
     const sql = getDb();
+
+    const recentFromIp = await sql`
+      SELECT deviation_px FROM center_attempts
+      WHERE user_agent = ${ua}
+      ORDER BY created_at DESC
+      LIMIT 5
+    `;
+    const roundedDev = Math.round(deviation * 10000);
+    const dupeCount = recentFromIp.filter(
+      (r: { deviation_px: number }) => Math.round(Number(r.deviation_px) * 10000) === roundedDev
+    ).length;
+    if (dupeCount >= 2) {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
+      return Response.json(
+        { error: "418: I'm a teapot. Déjà vu? Same score 3 times is suspicious.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { status: 418 }
+      );
+    }
 
     // Insert the attempt
     await sql`
