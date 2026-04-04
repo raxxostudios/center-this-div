@@ -26,6 +26,8 @@ import {
   CheckCircle,
   Sun,
   Moon,
+  Fire,
+  Bomb,
 } from '@phosphor-icons/react';
 
 /* ---- Helpers ---- */
@@ -448,22 +450,25 @@ function ResultOverlay({
         <div className={`result-card ${isNuked ? 'teapot-nuke-card' : ''}`}>
           <div className="result-scanline" />
 
-          {/* Exploding teapot emoji shower */}
+          {/* Exploding teapot icon shower */}
           <div className="teapot-explosion" aria-hidden="true">
-            {Array.from({ length: isNuked ? 40 : 12 }).map((_, i) => (
-              <span
-                key={i}
-                className="teapot-particle"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 0.6}s`,
-                  animationDuration: `${1 + Math.random() * 1.5}s`,
-                  fontSize: `${isNuked ? 20 + Math.random() * 32 : 14 + Math.random() * 18}px`,
-                }}
-              >
-                {isNuked ? (i % 3 === 0 ? '\u{1F4A5}' : i % 3 === 1 ? '\u{2615}' : '\u{1F525}') : '\u{2615}'}
-              </span>
-            ))}
+            {Array.from({ length: isNuked ? 40 : 12 }).map((_, i) => {
+              const size = isNuked ? 20 + Math.random() * 32 : 14 + Math.random() * 18;
+              const Icon = isNuked ? (i % 3 === 0 ? Bomb : i % 3 === 1 ? Coffee : Fire) : Coffee;
+              return (
+                <span
+                  key={i}
+                  className="teapot-particle"
+                  style={{
+                    left: `${Math.random() * 100}%`,
+                    animationDelay: `${Math.random() * 0.6}s`,
+                    animationDuration: `${1 + Math.random() * 1.5}s`,
+                  }}
+                >
+                  <Icon size={size} weight="fill" />
+                </span>
+              );
+            })}
           </div>
 
           <div className="result-brand">
