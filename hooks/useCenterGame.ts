@@ -322,6 +322,22 @@ export function useCenterGame(): CenterGameState {
       .then((r) => r.json())
       .then((d) => { challengeToken.current = d.token; })
       .catch(() => {});
+
+    // Block browser zoom (Ctrl+scroll, Ctrl+plus/minus, pinch)
+    const blockZoom = (e: WheelEvent) => {
+      if (e.ctrlKey || e.metaKey) e.preventDefault();
+    };
+    const blockKeyZoom = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '=' || e.key === '0')) {
+        e.preventDefault();
+      }
+    };
+    document.addEventListener('wheel', blockZoom, { passive: false });
+    document.addEventListener('keydown', blockKeyZoom);
+    return () => {
+      document.removeEventListener('wheel', blockZoom);
+      document.removeEventListener('keydown', blockKeyZoom);
+    };
   }, []);
 
   return {
