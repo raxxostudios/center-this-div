@@ -24,9 +24,17 @@ export async function GET() {
       LIMIT 100
     `;
 
+    // Best in last 24 hours
+    const best24h = await sql`
+      SELECT MIN(deviation_px) as best
+      FROM center_attempts
+      WHERE submitted_at > NOW() - INTERVAL '24 hours'
+    `;
+
     return Response.json({
       totalAttempts: Number(stats[0].total_attempts),
       bestDeviation: Number(stats[0].best_deviation),
+      best24h: best24h[0]?.best ? Number(best24h[0].best) : null,
       successes: Number(stats[0].successes),
       recentAttempts: recent.map((r) => ({
         deviation: Number(r.deviation_px),
