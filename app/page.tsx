@@ -1300,6 +1300,29 @@ export default function CenterDivChallenge() {
         </div>
       </div>
 
+      {/* MORE FROM RAXXO */}
+      <div className="more-from-raxxo">
+        <span className="more-label">More from RAXXO</span>
+        <div className="more-links">
+          <a href="https://raxxo.shop/pages/claude-blueprint" target="_blank" rel="noopener noreferrer" className="more-link">
+            Claude Blueprint
+            <span className="more-tag">33 EUR</span>
+          </a>
+          <a href="https://raxxo.shop/pages/git-dojo" target="_blank" rel="noopener noreferrer" className="more-link">
+            Git Dojo
+            <span className="more-tag">5 EUR</span>
+          </a>
+          <a href="https://raxxo.shop/pages/ohnine" target="_blank" rel="noopener noreferrer" className="more-link">
+            OhNine
+            <span className="more-tag">9 EUR</span>
+          </a>
+          <a href="https://raxxo.shop/blogs/lab" target="_blank" rel="noopener noreferrer" className="more-link">
+            Blog
+            <span className="more-tag">125 articles</span>
+          </a>
+        </div>
+      </div>
+
       {/* FOOTER */}
       <footer className="footer-line">
         <div className="footer-left">

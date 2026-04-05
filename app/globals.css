@@ -1232,6 +1232,60 @@ h1.nav-title,
 
 .teapot-trigger { cursor: default; }
 
+/* ---- More from RAXXO ---- */
+
+.more-from-raxxo {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 24px;
+  border-top: 1px solid var(--border);
+  background: rgba(31, 31, 33, 0.6);
+}
+
+.more-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-4);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.more-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.more-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-2);
+  text-decoration: none;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.more-link:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.more-tag {
+  font-size: 10px;
+  color: var(--text-4);
+  opacity: 0.7;
+}
+
 /* ---- 418 Teapot Easter Egg ---- */
 
 .teapot-overlay {
