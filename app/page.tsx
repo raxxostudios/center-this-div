@@ -1357,7 +1357,7 @@ export default function CenterDivChallenge() {
               {game.leaderboard.length === 0 && (
                 <p className="panel-empty">No attempts yet</p>
               )}
-              {game.leaderboard.slice(0, 10).map((entry) => (
+              {game.leaderboard.slice(0, 7).map((entry) => (
                 <LeaderRow key={entry.rank} entry={entry} />
               ))}
             </div>
