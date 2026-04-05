@@ -1318,7 +1318,7 @@ export default function CenterDivChallenge() {
           </a>
           <a href="https://raxxo.shop/blogs/lab" target="_blank" rel="noopener noreferrer" className="more-link">
             Blog
-            <span className="more-tag">125 articles</span>
+            <span className="more-tag">Free</span>
           </a>
         </div>
       </div>
