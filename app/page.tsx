@@ -337,6 +337,45 @@ function RecentRow({ deviation, time }: { deviation: number; time: string }) {
 
 /* ---- Submit Result Modal ---- */
 
+// Skill tier based on deviation
+function getTier(dev: number): { name: string; color: string } {
+  if (dev < 0.05) return { name: 'Pixel Surgeon', color: '#e3fc02' };
+  if (dev < 0.1) return { name: 'Sub-Pixel Territory', color: '#00FCED' };
+  if (dev < 0.5) return { name: 'Microscope Vision', color: '#00FCED' };
+  if (dev < 1) return { name: 'Almost Human', color: '#95BF47' };
+  if (dev < 5) return { name: 'Getting Warm', color: '#FF6B00' };
+  if (dev < 20) return { name: 'In The Neighborhood', color: '#FF6B00' };
+  if (dev < 50) return { name: 'Wrong Continent', color: '#FF0079' };
+  return { name: 'Did You Even Try', color: '#FF0079' };
+}
+
+// Personal best via localStorage
+function getPersonalBest(): number | null {
+  if (typeof window === 'undefined') return null;
+  const v = localStorage.getItem('ctd-personal-best');
+  return v ? parseFloat(v) : null;
+}
+function setPersonalBest(dev: number) {
+  if (typeof window === 'undefined') return;
+  const prev = getPersonalBest();
+  if (!prev || dev < prev) localStorage.setItem('ctd-personal-best', String(dev));
+}
+function getAttemptStreak(): number {
+  if (typeof window === 'undefined') return 0;
+  const d = localStorage.getItem('ctd-streak-date');
+  const c = parseInt(localStorage.getItem('ctd-streak-count') || '0');
+  const today = new Date().toISOString().substring(0, 10);
+  return d === today ? c : 0;
+}
+function bumpAttemptStreak() {
+  if (typeof window === 'undefined') return;
+  const today = new Date().toISOString().substring(0, 10);
+  const d = localStorage.getItem('ctd-streak-date');
+  const c = parseInt(localStorage.getItem('ctd-streak-count') || '0');
+  localStorage.setItem('ctd-streak-date', today);
+  localStorage.setItem('ctd-streak-count', String(d === today ? c + 1 : 1));
+}
+
 function ResultOverlay({
   result,
   onReset,
@@ -357,6 +396,14 @@ function ResultOverlay({
   const [justCopied, setJustCopied] = useState(false);
   const multiplier = (result.yourDeviation / 0.0001).toFixed(0);
   const url = typeof window !== 'undefined' ? window.location.origin : 'https://center-this-div.vercel.app';
+  const tier = getTier(result.yourDeviation);
+  const prevBest = getPersonalBest();
+  const isNewPB = !prevBest || result.yourDeviation < prevBest;
+
+  useEffect(() => {
+    setPersonalBest(result.yourDeviation);
+    bumpAttemptStreak();
+  }, [result.yourDeviation]);
   // Memoize so the quote doesn't change on every re-render
   const earth = useMemo(() => getEarthScale(result.yourDeviation, targetWidth), [result.yourDeviation, targetWidth]);
 
@@ -549,6 +596,13 @@ function ResultOverlay({
           <span className="result-hero-unit">px off</span>
         </div>
 
+        {/* Tier badge + personal best */}
+        <div className="result-tier-row">
+          <span className="result-tier-badge" style={{ borderColor: tier.color, color: tier.color }}>{tier.name}</span>
+          {isNewPB && <span className="result-pb-badge">NEW PB!</span>}
+          <span className="result-percentile">Top {(100 - result.percentile).toFixed(0)}%</span>
+        </div>
+
         {/* Compact inline stats */}
         <div className="result-inline-stats">
           <span>X: {result.yourDeviationX > 0 ? '+' : ''}{result.yourDeviationX.toFixed(2)}</span>
@@ -556,6 +610,7 @@ function ResultOverlay({
           <span>Y: {result.yourDeviationY > 0 ? '+' : ''}{result.yourDeviationY.toFixed(2)}</span>
           <span className="result-inline-sep">/</span>
           <span>Rank #{result.rank} of {result.totalAttempts}</span>
+          {prevBest && <><span className="result-inline-sep">/</span><span>PB: {prevBest.toFixed(4)}px</span></>}
         </div>
 
         {/* Earth scale - the star of the show */}
