@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useCallback, useRef } from 'react';
 import { useCenterGame } from '@/hooks/useCenterGame';
-import type { LeaderboardEntry } from '@/hooks/useCenterGame';
+import type { LeaderboardEntry, PercentileCluster } from '@/hooks/useCenterGame';
 import { getRandomQuote } from '@/lib/earth-quotes';
 import {
   Crosshair,
@@ -334,6 +334,19 @@ function LeaderRow({ entry }: { entry: LeaderboardEntry }) {
       <span className="leader-rank">#{entry.rank}</span>
       <span className="leader-dev">{entry.deviation.toFixed(4)}px</span>
       <span className="leader-time">{timeAgo(entry.time)}</span>
+    </div>
+  );
+}
+
+/* ---- Percentile Cluster ---- */
+
+function PercentileRow({ cluster }: { cluster: PercentileCluster }) {
+  const color = cluster.pct <= 0.01 ? '#e3fc02' : cluster.pct <= 0.05 ? '#00FCED' : cluster.pct <= 0.10 ? '#22c55e' : cluster.pct <= 0.25 ? '#FF6B00' : cluster.pct <= 0.50 ? '#FF0079' : 'rgba(245,245,247,0.4)';
+  return (
+    <div className="leader-row" style={{ borderLeft: `2px solid ${color}`, paddingLeft: 8 }}>
+      <span className="leader-rank" style={{ color, minWidth: 52 }}>{cluster.label}</span>
+      <span className="leader-dev">&le; {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
+      <span className="leader-time" style={{ opacity: 0.5 }}>{cluster.count.toLocaleString()} entries</span>
     </div>
   );
 }
@@ -1351,35 +1364,35 @@ export default function CenterDivChallenge() {
           <div className="panel-card panel-3d-right">
             <h3 className="panel-heading">
               <Trophy size={14} weight="fill" />
-              CLOSEST ATTEMPTS
+              PERCENTILE RANGES
             </h3>
             <div className="leader-list">
-              {game.leaderboard.length === 0 && (
+              {game.percentiles.length === 0 && (
                 <p className="panel-empty">No attempts yet</p>
               )}
-              {game.leaderboard.slice(0, 7).map((entry) => (
-                <LeaderRow key={entry.rank} entry={entry} />
+              {game.percentiles.map((cluster) => (
+                <PercentileRow key={cluster.label} cluster={cluster} />
               ))}
             </div>
-            {game.globalStats.totalAttempts > 0 && (() => {
-              const lb = game.leaderboard;
-              const total = game.globalStats.totalAttempts;
+            {game.totalAttempts > 0 && (() => {
               const pb = getPersonalBest();
-              const top10Max = lb[Math.min(9, lb.length - 1)]?.deviation;
-              const top50Max = lb[Math.min(49, lb.length - 1)]?.deviation;
+              const total = game.totalAttempts;
+              const yourPct = pb && game.percentiles.length > 0
+                ? game.percentiles.find((c: PercentileCluster) => pb <= c.threshold)
+                : null;
               return (
                 <div className="leader-context">
                   <div className="leader-ranges">
-                    {top10Max != null && <span className="leader-range"><span className="leader-range-label">Top 10</span> {lb[0]?.deviation.toFixed(3)}-{top10Max.toFixed(3)}px</span>}
-                    {top50Max != null && top50Max !== top10Max && <span className="leader-range"><span className="leader-range-label">Top 50</span> {(top10Max ?? 0).toFixed(3)}-{top50Max.toFixed(3)}px</span>}
-                    {pb && <span className="leader-range leader-range-you"><span className="leader-range-label">You</span> {pb < 1 ? pb.toFixed(4) : pb.toFixed(2)}px</span>}
+                    {pb && <span className="leader-range leader-range-you"><span className="leader-range-label">You</span> {pb < 1 ? pb.toFixed(4) : pb.toFixed(2)}px {yourPct ? `(${yourPct.label})` : ''}</span>}
+                    <span className="leader-range"><span className="leader-range-label">Total</span> {total.toLocaleString()} attempts</span>
                   </div>
                   <div className="leader-motivation">
                     {!pb
-                      ? `${total.toLocaleString()} attempts. 0 wins. Be the first.`
-                      : pb < 0.1 ? `Closer than most will ever get.`
-                      : pb < 1 ? `Sub-pixel club. Keep pushing.`
-                      : pb < 10 ? `Top 10 is ${top10Max?.toFixed(4) || '?'}px. You can get there.`
+                      ? `${total.toLocaleString()} attempts so far. Try yours.`
+                      : yourPct && yourPct.pct <= 0.01 ? `Top 1%. Closer than almost everyone.`
+                      : yourPct && yourPct.pct <= 0.05 ? `Top 5%. Sub-pixel territory.`
+                      : yourPct && yourPct.pct <= 0.10 ? `Top 10%. Keep pushing.`
+                      : yourPct && yourPct.pct <= 0.25 ? `Top 25%. Getting warm.`
                       : `${total.toLocaleString()} tried. You can do better.`
                     }
                   </div>
