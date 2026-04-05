@@ -1,0 +1,2510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can You Center This Div? - Launch Campaign Deck</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #06060e;
+    --surface: #0d0d18;
+    --surface-hover: #111125;
+    --border: #1a1a2e;
+    --border-bright: #2a2a4e;
+    --lime: #e3fc02;
+    --lime-dim: rgba(227, 252, 2, 0.15);
+    --lime-glow: rgba(227, 252, 2, 0.08);
+    --cyan: #00FCED;
+    --cyan-dim: rgba(0, 252, 237, 0.12);
+    --red: #ff4060;
+    --red-dim: rgba(255, 64, 96, 0.12);
+    --text: #F5F5F7;
+    --muted: #8888aa;
+    --dim: #555570;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Outfit', sans-serif;
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    padding: 0;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: var(--lime);
+    color: var(--bg);
+  }
+
+  a { color: var(--cyan); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--lime); }
+
+  /* Layout */
+  .container {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  /* ========== HERO ========== */
+  .hero {
+    text-align: center;
+    padding: 64px 20px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(227,252,2,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--bg);
+    background: var(--lime);
+    padding: 6px 20px;
+    border-radius: 9999px;
+    margin-bottom: 24px;
+  }
+
+  .hero h1 {
+    font-family: var(--mono);
+    font-size: clamp(28px, 6vw, 52px);
+    font-weight: 800;
+    color: var(--lime);
+    letter-spacing: -2px;
+    line-height: 1.1;
+    margin-bottom: 12px;
+  }
+
+  .hero .subtitle {
+    font-size: 18px;
+    color: var(--muted);
+    font-family: var(--sans);
+    font-weight: 400;
+    margin-bottom: 24px;
+  }
+
+  .hero .subtitle a { color: var(--cyan); }
+
+  .hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    flex-wrap: wrap;
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+
+  .hero-stat {
+    text-align: center;
+  }
+
+  .hero-stat .value {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--lime);
+    display: block;
+  }
+
+  .hero-stat .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 4px;
+  }
+
+  .hero-links {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .hero-link {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 9999px;
+    border: 1px solid var(--border);
+    color: var(--text);
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-link:hover {
+    border-color: var(--lime);
+    color: var(--lime);
+    background: var(--lime-glow);
+  }
+
+  .hero-link.primary {
+    background: var(--lime);
+    color: var(--bg);
+    border-color: var(--lime);
+  }
+
+  .hero-link.primary:hover {
+    background: var(--cyan);
+    border-color: var(--cyan);
+    color: var(--bg);
+  }
+
+  /* ========== NAV ========== */
+  .nav-bar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(6, 6, 14, 0.92);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 20px;
+  }
+
+  .nav-inner {
+    max-width: 920px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .nav-inner::-webkit-scrollbar { display: none; }
+
+  .nav-link {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    padding: 14px 16px;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+
+  .nav-link:hover {
+    color: var(--lime);
+    border-bottom-color: var(--lime);
+  }
+
+  /* ========== SECTION HEADERS ========== */
+  .section {
+    padding: 48px 0 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-number {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--bg);
+    background: var(--cyan);
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-header h2 {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .section-header .section-desc {
+    font-size: 13px;
+    color: var(--muted);
+    margin-left: auto;
+    font-family: var(--mono);
+  }
+
+  /* ========== TIMELINE ========== */
+  .timeline {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 32px;
+  }
+
+  .timeline-phase {
+    margin-bottom: 24px;
+  }
+
+  .timeline-phase:last-child { margin-bottom: 0; }
+
+  .timeline-phase-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--cyan);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 8px;
+  }
+
+  .timeline-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px;
+    border-radius: var(--radius-sm);
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+  }
+
+  .timeline-item:hover {
+    border-color: var(--lime);
+    background: var(--lime-glow);
+  }
+
+  .timeline-item.done {
+    opacity: 0.45;
+  }
+
+  .timeline-item.done .check {
+    background: var(--lime);
+    color: var(--bg);
+    border-color: var(--lime);
+  }
+
+  .check {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 6px;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-family: var(--mono);
+    font-weight: 700;
+    transition: all 0.2s;
+    color: var(--dim);
+  }
+
+  .timeline-item .info { font-size: 13px; line-height: 1.4; }
+  .timeline-item .info strong { display: block; color: var(--text); font-weight: 600; }
+  .timeline-item .info .when { color: var(--muted); font-size: 11px; font-family: var(--mono); }
+
+  .timeline-progress {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-bar {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 9999px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--lime);
+    border-radius: 9999px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--lime);
+    min-width: 48px;
+    text-align: right;
+  }
+
+  /* ========== CARDS ========== */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .card:hover { border-color: rgba(227, 252, 2, 0.25); }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255,255,255,0.015);
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .card-header h3 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+
+  .card-header-right {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .platform-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: rgba(255,255,255,0.05);
+    padding: 4px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+
+  .copy-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--lime);
+    border: none;
+    padding: 6px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    white-space: nowrap;
+  }
+
+  .copy-btn:hover { background: var(--cyan); transform: translateY(-1px); }
+  .copy-btn.copied { background: var(--cyan); }
+
+  .card-body { padding: 0; }
+
+  .card-body pre {
+    margin: 0;
+    padding: 20px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text);
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-x: auto;
+    background: transparent;
+  }
+
+  .card-body .note {
+    padding: 10px 20px;
+    font-size: 11px;
+    color: var(--muted);
+    font-family: var(--mono);
+    border-top: 1px solid var(--border);
+    background: rgba(0, 252, 237, 0.03);
+  }
+
+  .card-body .note.warning {
+    background: rgba(255, 64, 96, 0.05);
+    color: var(--red);
+  }
+
+  /* ========== DRINKING GAME ========== */
+  .drinking-game {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 20px;
+  }
+
+  .drinking-game h3 {
+    font-family: var(--mono);
+    font-size: 20px;
+    font-weight: 800;
+    color: var(--lime);
+    text-align: center;
+    margin-bottom: 8px;
+  }
+
+  .drinking-game .dg-sub {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+    margin-bottom: 24px;
+  }
+
+  .dg-section {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+  }
+
+  .dg-section:last-child { margin-bottom: 0; }
+
+  .dg-section h4 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--cyan);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .dg-section h4.red { color: var(--red); }
+  .dg-section h4.lime { color: var(--lime); }
+
+  .dg-section ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  .dg-section ul li {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+    color: var(--text);
+    line-height: 1.5;
+  }
+
+  .dg-section ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 10px;
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    background: var(--border-bright);
+  }
+
+  /* ========== AD SCRIPTS ========== */
+  .ad-script {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .ad-script-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .ad-script-title {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  .ad-script-duration {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--red-dim);
+    padding: 4px 10px;
+    border-radius: 6px;
+  }
+
+  .ad-script-body {
+    padding: 20px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .ad-script-body .direction {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .ad-script-body .dialogue {
+    color: var(--lime);
+  }
+
+  .ad-script-body .action {
+    color: var(--cyan);
+  }
+
+  /* ========== MEME PROMPTS ========== */
+  .meme-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .meme-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    transition: border-color 0.2s;
+    position: relative;
+  }
+
+  .meme-card:hover { border-color: var(--lime); }
+
+  .meme-number {
+    font-family: var(--mono);
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--border-bright);
+    position: absolute;
+    top: 12px;
+    right: 16px;
+    line-height: 1;
+  }
+
+  .meme-card p {
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.6;
+    color: var(--text);
+    padding-right: 32px;
+  }
+
+  .meme-card .meme-copy {
+    margin-top: 12px;
+  }
+
+  /* ========== ENGAGEMENT / HASHTAGS ========== */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+  }
+
+  .tag {
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    transition: all 0.2s;
+  }
+
+  .tag.primary { border-color: var(--lime); color: var(--lime); background: var(--lime-dim); }
+  .tag.secondary { border-color: var(--cyan); color: var(--cyan); background: var(--cyan-dim); }
+
+  /* ========== FOOTER ========== */
+  .footer {
+    text-align: center;
+    padding: 64px 20px 48px;
+    border-top: 1px solid var(--border);
+    margin-top: 48px;
+  }
+
+  .footer p {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .footer .zero {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--lime);
+  }
+
+  /* ========== TOAST ========== */
+  .toast {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: var(--lime);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 12px 32px;
+    border-radius: 9999px;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 999;
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(227, 252, 2, 0.25);
+  }
+
+  .toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  /* ========== SCANLINES ========== */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0, 0, 0, 0.02) 2px,
+      rgba(0, 0, 0, 0.02) 4px
+    );
+    z-index: 9999;
+  }
+
+  /* ========== RESPONSIVE ========== */
+  @media (max-width: 640px) {
+    .hero { padding: 48px 16px 32px; }
+    .hero-stats { gap: 24px; }
+    .hero-stat .value { font-size: 22px; }
+    .container { padding: 0 12px; }
+    .card-body pre { font-size: 11px; padding: 16px; }
+    .card-header { padding: 12px 16px; }
+    .section-header { flex-wrap: wrap; gap: 8px; }
+    .section-header .section-desc { margin-left: 0; }
+    .nav-link { padding: 12px 10px; font-size: 10px; }
+    .drinking-game { padding: 20px; }
+    .meme-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <div class="hero-badge">Launch Campaign Deck</div>
+  <h1>CAN YOU CENTER<br>THIS DIV?</h1>
+  <p class="subtitle">The most overengineered impossible game on the internet.<br>Built by <a href="https://raxxo.shop" target="_blank" rel="noopener">RAXXO Studios</a>.</p>
+  <div class="hero-links">
+    <a href="https://center-this-div.vercel.app" target="_blank" rel="noopener" class="hero-link primary">Play the Game</a>
+    <a href="https://github.com/raxxostudios/center-this-div" target="_blank" rel="noopener" class="hero-link">GitHub (Open Source)</a>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat">
+      <span class="value">0.0001px</span>
+      <span class="label">Threshold</span>
+    </div>
+    <div class="hero-stat">
+      <span class="value">0</span>
+      <span class="label">Successes (ever)</span>
+    </div>
+    <div class="hero-stat">
+      <span class="value">15</span>
+      <span class="label">Platforms</span>
+    </div>
+    <div class="hero-stat">
+      <span class="value">April 2026</span>
+      <span class="label">Launch Window</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== NAV ===================== -->
+<nav class="nav-bar">
+  <div class="nav-inner">
+    <a href="#timeline" class="nav-link">Timeline</a>
+    <a href="#posts" class="nav-link">Platform Posts</a>
+    <a href="#drinking" class="nav-link">Drinking Game</a>
+    <a href="#ads" class="nav-link">Ad Scripts</a>
+    <a href="#memes" class="nav-link">Meme Prompts</a>
+    <a href="#engagement" class="nav-link">Engagement</a>
+    <a href="#outreach" class="nav-link">Outreach</a>
+    <a href="#hashtags" class="nav-link">Hashtags</a>
+  </div>
+</nav>
+
+<div class="container">
+
+<!-- ===================== PART 1: LAUNCH TIMELINE ===================== -->
+<div class="section" id="timeline">
+  <div class="section-header">
+    <div class="section-number">01</div>
+    <h2>Launch Timeline</h2>
+    <span class="section-desc">Click to check off. Persists in localStorage.</span>
+  </div>
+</div>
+
+<div class="timeline">
+
+  <div class="timeline-phase">
+    <div class="timeline-phase-label">Phase 1: Pre-Launch (March 31)</div>
+    <div class="timeline-grid">
+      <div class="timeline-item" data-step="0">
+        <div class="check">1</div>
+        <div class="info">
+          <strong>Final QA pass</strong>
+          <span class="when">Leaderboard, share cards, mobile, 418 teapot</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="1">
+        <div class="check">2</div>
+        <div class="info">
+          <strong>OG image + screenshots</strong>
+          <span class="when">1200x630 OG, 1080x1080 share, GIF demo</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="2">
+        <div class="check">3</div>
+        <div class="info">
+          <strong>Draft all platform posts</strong>
+          <span class="when">Copy from this document, personalize</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="3">
+        <div class="check">4</div>
+        <div class="info">
+          <strong>ProductHunt page setup</strong>
+          <span class="when">Create upcoming page, schedule for April 4</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="4">
+        <div class="check">5</div>
+        <div class="info">
+          <strong>Record demo video</strong>
+          <span class="when">15s gameplay clip for TikTok/Reels/Shorts</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-phase">
+    <div class="timeline-phase-label">Phase 2: Launch Day (April 1, April Fools)</div>
+    <div class="timeline-grid">
+      <div class="timeline-item" data-step="5">
+        <div class="check">6</div>
+        <div class="info">
+          <strong>Dev.to Challenge Post</strong>
+          <span class="when">6:00 CET, set published: true</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="6">
+        <div class="check">7</div>
+        <div class="info">
+          <strong>Hacker News (Show HN)</strong>
+          <span class="when">7:00 CET (1am ET, catches US early birds)</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="7">
+        <div class="check">8</div>
+        <div class="info">
+          <strong>X/Twitter Thread</strong>
+          <span class="when">8:00 CET, thread + standalone tweet</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="8">
+        <div class="check">9</div>
+        <div class="info">
+          <strong>Reddit r/webdev</strong>
+          <span class="when">9:00 CET</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="9">
+        <div class="check">10</div>
+        <div class="info">
+          <strong>Reddit r/ProgrammerHumor</strong>
+          <span class="when">9:30 CET, shorter/funnier version</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="10">
+        <div class="check">11</div>
+        <div class="info">
+          <strong>Reddit r/javascript</strong>
+          <span class="when">10:00 CET, tech-focused angle</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="11">
+        <div class="check">12</div>
+        <div class="info">
+          <strong>LinkedIn Post</strong>
+          <span class="when">10:30 CET, story-driven for devs</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="12">
+        <div class="check">13</div>
+        <div class="info">
+          <strong>Email Newsletter</strong>
+          <span class="when">11:00 CET</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="13">
+        <div class="check">14</div>
+        <div class="info">
+          <strong>Discord Posts</strong>
+          <span class="when">11:30 CET, dev community servers</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="14">
+        <div class="check">15</div>
+        <div class="info">
+          <strong>WhatsApp/Telegram Forwards</strong>
+          <span class="when">12:00 CET, send to dev groups</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="15">
+        <div class="check">16</div>
+        <div class="info">
+          <strong>Instagram Carousel</strong>
+          <span class="when">18:00 CET, evening engagement peak</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="16">
+        <div class="check">17</div>
+        <div class="info">
+          <strong>TikTok/Reels/Shorts</strong>
+          <span class="when">19:00 CET, video content</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-phase">
+    <div class="timeline-phase-label">Phase 3: Momentum (April 2-3)</div>
+    <div class="timeline-grid">
+      <div class="timeline-item" data-step="17">
+        <div class="check">18</div>
+        <div class="info">
+          <strong>ProductHunt Launch</strong>
+          <span class="when">April 3, NOW</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="18">
+        <div class="check">19</div>
+        <div class="info">
+          <strong>Influencer DMs</strong>
+          <span class="when">April 3, send personalized outreach</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="19">
+        <div class="check">20</div>
+        <div class="info">
+          <strong>Reply to every comment</strong>
+          <span class="when">April 3+, all platforms, stay in threads</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="20">
+        <div class="check">21</div>
+        <div class="info">
+          <strong>Share leaderboard updates</strong>
+          <span class="when">April 4-5, "Day 2: still nobody centered it"</span>
+        </div>
+      </div>
+      <div class="timeline-item" data-step="21">
+        <div class="check">22</div>
+        <div class="info">
+          <strong>Cross-post winning comments</strong>
+          <span class="when">April 3, screenshot best reactions, reshare</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="timeline-progress">
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="progress-label" id="progressLabel">0 / 22</div>
+  </div>
+</div>
+
+
+<!-- ===================== PART 2: PLATFORM POSTS ===================== -->
+<div class="section" id="posts">
+  <div class="section-header">
+    <div class="section-number">02</div>
+    <h2>Platform Posts</h2>
+    <span class="section-desc">15 platforms. Copy and post.</span>
+  </div>
+</div>
+
+<!-- 1. Dev.to -->
+<div class="card">
+  <div class="card-header">
+    <h3>1. Dev.to Challenge Submission</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">dev.to/new</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>---
+title: "Can You Center This Div? (Spoiler: No, You Can't)"
+published: true
+tags: devchallenge, 418challenge, showdev
+---
+
+*This is a submission for the [DEV April Fools Challenge](https://dev.to/challenges/aprilfools-2026)*
+
+## What I Built
+
+A precision challenge where you drag a `&lt;div&gt;` to the exact center of the screen. The success threshold is **0.0001 pixels**. For context, a single pixel on a Retina display is about 0.5 physical pixels. The threshold is 5,000x smaller than that.
+
+The global success counter reads **0**. It will always read 0.
+
+The interface is a full JARVIS-style holographic HUD dashboard with:
+
+- Real-time deviation readouts (X, Y, total distance) updating at 60fps
+- Precision meter with logarithmic scale (INSANE / CLOSE / WARM / MEH / LOST)
+- Global leaderboard pulling top 20 closest attempts from Neon Postgres
+- Live feed showing recent attempts from players worldwide
+- Radar sweep with live player blips
+- Earth Scale that maps your pixel error to real-world distance (your 2.4px miss = 49,873km on Earth)
+- 2,500+ handwritten quotes based on how far off you are
+- Share cards for every platform (1080x1080 Retina PNG)
+- Hidden 418 teapot easter egg (particle cloud, draggable, zoomable, with steam)
+- Light/dark mode
+
+**Anti-value proposition:** This app takes the most solved problem in CSS and makes it unsolvable.
+
+## Demo
+
+**[center-this-div.vercel.app](https://center-this-div.vercel.app)**
+
+Drag the div. Submit your attempt. Share your score. Join the leaderboard of people who almost centered a div but didn't.
+
+When you submit, a HUD result card slams in with a glitch-text "NOT CENTERED" verdict, your exact deviation to 6 decimal places, your global rank, and a reminder that you were 47,000x over the threshold.
+
+The share text includes your Earth Scale result:
+
+&gt; I got 7.975985px from center in "Can You Center This Div?"
+&gt; If the target was Earth, I missed by 689km.
+&gt; "700km. The distance from Amsterdam to Berlin."
+&gt; Rank #26 of 48. Successes: 0. Ever.
+
+## Code
+
+{% github raxxostudios/center-this-div %}
+
+Dead simple stack, wildly overengineered execution:
+
+- **Next.js 16** + React 19 + TypeScript
+- **Neon Postgres** (serverless) for global leaderboard and stats
+- **Phosphor Icons** for HUD iconography
+- **Pure CSS** doing 90% of the visual work (no animation libraries)
+- **Pointer Events API** with drag offset tracking for sub-pixel precision
+- **Canvas API** for generating share card images
+
+The entire game logic lives in one custom hook: `useDivCentering`. Around 200 lines. The HUD is all CSS custom properties, perspective transforms, conic-gradient radar sweeps, and keyframe animations for scan lines, ring pulses, and floating labels.
+
+## How I Built It
+
+The game measures Euclidean distance from the div center to the target center. Results are stored as REAL in Postgres, giving about 7 significant digits of precision. More than enough to confirm you failed.
+
+The Earth Scale converts pixel deviation to kilometers using `deviationPx * (40,075km / targetWidthPx)`. Each distance tier has 10 handwritten quotes. Getting within 1px maps to about 200km. Getting within 0.1px maps to about 20km. Getting within 0.0001px maps to about 20 meters. Nobody has gotten there.
+
+The 418 easter egg renders a Utah teapot as a 3D point cloud (~2,500 particles) with full drag rotation, scroll zoom, pinch zoom on mobile, and steam particles rising from the spout. All pure canvas, no 3D libraries.
+
+Anti-cheat: submissions with both X and Y deviation are pattern-analyzed and rejected with HTTP 418 ("I'm a teapot. Nice try."). The success counter never increments. It is hardcoded to stay at 0 forever.
+
+The leaderboard is sorted by total deviation ascending. The top entry: 0.020px. Close. Not close enough. Not even in the same universe as close enough.
+
+## Prize Category
+
+**Best Ode to Larry Masinter** (HTTP 418 is front and center) and **Community Favorite**.</pre>
+    <div class="note">Paste directly into dev.to/new. Set published: true when ready. The {% github %} embed auto-renders the repo card.</div>
+  </div>
+</div>
+
+<!-- 2. X/Twitter Thread -->
+<div class="card">
+  <div class="card-header">
+    <h3>2. X/Twitter Thread</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">5 tweets</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>1/ I built a game where you drag a div to the center of the screen.
+
+The success threshold is 0.0001 pixels.
+
+Nobody has ever won. Nobody ever will.
+
+center-this-div.vercel.app
+
+---
+
+2/ The interface is a full JARVIS-style HUD. Real-time deviation readouts at 60fps, logarithmic precision meter, global leaderboard, radar sweep, and live feed of other players failing worldwide.
+
+When you submit, it tells you your miss would be 47,000km if the target was Earth.
+
+---
+
+3/ Hidden easter egg: find the 418 teapot.
+
+It renders a Utah teapot as a 3D particle cloud with drag rotation, zoom, and steam particles. All pure canvas. No libraries.
+
+If your submission is suspiciously close, it rejects you with HTTP 418: "I'm a teapot. Nice try."
+
+---
+
+4/ Stack: Next.js 16, React 19, Neon Postgres, pure CSS for 90% of the visuals. No animation libraries. The entire game logic lives in one custom hook.
+
+2,500+ unique failure quotes. Share cards for every platform. Open source.
+
+github.com/raxxostudios/center-this-div
+
+---
+
+5/ Global successes: 0. Ever.
+
+The counter is real. It pulls from the database. It just never increments because 0.0001px is physically impossible to hit with a pointer device.
+
+Try it. Share your score. Join the leaderboard of beautiful failures.
+
+center-this-div.vercel.app</pre>
+    <div class="note">Post tweet 1 first. Wait 2 minutes between each reply in the thread. Include a screenshot or GIF with tweet 1 for max engagement.</div>
+  </div>
+</div>
+
+<!-- 3. X/Twitter Single Tweet -->
+<div class="card">
+  <div class="card-header">
+    <h3>3. X/Twitter Standalone Tweet</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">single banger</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>I made "Can You Center This Div?" with a 0.0001px success threshold.
+
+Global successes: 0. The counter is real. It queries the database. It just never increments.
+
+The game tells you your pixel miss in Earth kilometers. My best attempt missed by 47,000km.
+
+Try it: center-this-div.vercel.app</pre>
+    <div class="note">Use this as a standalone tweet. Attach a screenshot of a failed attempt with the HUD visible. Best posted at peak engagement hours (9-11am ET).</div>
+  </div>
+</div>
+
+<!-- 4. Reddit r/webdev -->
+<div class="card">
+  <div class="card-header">
+    <h3>4. Reddit r/webdev</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">r/webdev</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Title: I made a game where you center a div. The threshold is 0.0001px. Nobody has ever won.
+
+---
+
+I built "Can You Center This Div?" for the DEV April Fools 2026 challenge.
+
+You drag a div to the center of the screen. That's it. The catch: the success threshold is 0.0001 pixels, roughly 5,000x smaller than a single pixel on a Retina display.
+
+The global success counter reads 0. It has always read 0.
+
+The whole thing is wrapped in a JARVIS-style HUD with real-time deviation readouts, a logarithmic precision meter, a global leaderboard, radar sweep with live player blips, and an "Earth Scale" that translates your pixel miss to real-world distance. Miss by 3px? That's 49,000km on Earth. Congrats, you missed by more than the circumference.
+
+Other features:
+- 2,500+ quotes based on how far off you are
+- Share cards for every platform (1080x1080 PNG)
+- Hidden 418 teapot easter egg (3D particle cloud with steam)
+- Anti-cheat that rejects suspiciously close submissions with HTTP 418
+- Light and dark mode
+- Open source
+
+Stack: Next.js 16, React 19, TypeScript, Neon Postgres (serverless), pure CSS for 90% of the visuals. No animation libraries. Game logic is a single custom hook.
+
+GitHub: github.com/raxxostudios/center-this-div
+
+Try it: center-this-div.vercel.app
+
+The anti-value proposition: this app takes the most solved problem in CSS and makes it unsolvable.
+
+Happy April Fools. The joke is your CSS skills.</pre>
+    <div class="note">Post to r/webdev first. Wait 30-60 minutes before cross-posting to other subreddits. Reply to every early comment to boost the thread.</div>
+  </div>
+</div>
+
+<!-- 5. Reddit r/ProgrammerHumor -->
+<div class="card">
+  <div class="card-header">
+    <h3>5. Reddit r/ProgrammerHumor</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">r/ProgrammerHumor</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Title: I made "Can You Center This Div?" with a 0.0001px threshold. The success counter reads 0. It always will.
+
+---
+
+center-this-div.vercel.app
+
+You drag a div to center. The threshold is 0.0001 pixels. The game tells you how far off you'd be in kilometers if the target was Earth.
+
+My best attempt missed by 47,000km. Further than Earth's circumference.
+
+The leaderboard is real. The success counter is real. Both are pulling from Postgres. One of them will never change.
+
+There's also a hidden 418 teapot. If your submission is suspiciously close, the server responds with HTTP 418: "I'm a teapot. Nice try."
+
+Open source if you want to verify that the success counter is, in fact, hardcoded to 0: github.com/raxxostudios/center-this-div</pre>
+    <div class="note">Shorter, punchier. r/ProgrammerHumor rewards brevity and self-deprecation. Attach a screenshot of a hilariously bad attempt.</div>
+  </div>
+</div>
+
+<!-- 6. Reddit r/javascript -->
+<div class="card">
+  <div class="card-header">
+    <h3>6. Reddit r/javascript</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">r/javascript</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Title: [Showoff Saturday] Can You Center This Div? - overengineered CSS centering game with JARVIS HUD, Neon Postgres leaderboard, and a 418 teapot
+
+---
+
+Built this for the DEV April Fools 2026 challenge. You drag a div to center. Threshold: 0.0001px.
+
+Interesting technical bits:
+
+**Precision tracking:** Euclidean distance from div center to target center, calculated on pointermove. Results stored as REAL in Neon Postgres (7 significant digits). Pointer Events API handles the dragging with offset tracking for sub-pixel accuracy.
+
+**HUD rendering:** 100% CSS. Custom properties, perspective transforms on side panels, repeating-linear-gradient measurement lines, conic-gradient radar sweep, keyframe animations for scan lines and ring pulses. Zero animation libraries.
+
+**Earth Scale:** Converts pixel deviation to kilometers using deviationPx * (40,075km / targetWidthPx). Each distance tier has 10 handwritten quotes. The math is simple. The roasts are not.
+
+**418 easter egg:** Utah teapot rendered as ~2,500 3D point cloud particles on canvas. Full drag rotation, scroll zoom, pinch zoom on mobile, steam particles from the spout. No WebGL, no Three.js, pure 2D canvas with manual projection.
+
+**Anti-cheat:** Submissions with both X and Y deviation are pattern-analyzed and return HTTP 418. The success counter queries the database but is hardcoded to never increment.
+
+**Share cards:** Generated client-side using Canvas API. 1080x1080 Retina PNGs with the HUD aesthetic, deviation stats, rank, and Earth Scale quote.
+
+Stack: Next.js 16, React 19, TypeScript, Neon Postgres (serverless), Phosphor Icons.
+
+Live: center-this-div.vercel.app
+Source: github.com/raxxostudios/center-this-div
+
+Current leaderboard leader: 0.89px. Not even close.</pre>
+    <div class="note">r/javascript wants technical depth. Lead with implementation details. Post on Showoff Saturday if timing allows.</div>
+  </div>
+</div>
+
+<!-- 7. LinkedIn -->
+<div class="card">
+  <div class="card-header">
+    <h3>7. LinkedIn Post</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">LinkedIn</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Centering a div is the most solved problem in CSS.
+
+So I made it unsolvable.
+
+"Can You Center This Div?" is a precision challenge where you drag a div to the exact center of the screen. The success threshold is 0.0001 pixels. That's 5,000x smaller than a single Retina pixel.
+
+Global successes: 0. Ever.
+
+The interface is a full holographic HUD dashboard. Real-time deviation readouts at 60fps. Global leaderboard tracking the closest attempts worldwide. An "Earth Scale" that translates your pixel miss to real-world distance. Your 3px miss? That's 49,000km in real life. Further than Earth's circumference.
+
+Built with Next.js 16, React 19, Neon Postgres, and pure CSS doing 90% of the visual work. No animation libraries. The entire game logic is a single custom hook. Around 200 lines.
+
+It started as a joke for the DEV April Fools 2026 challenge. Then it got a leaderboard. Then a radar sweep. Then a 418 teapot easter egg that renders a 3D particle cloud. Then 2,500 unique failure quotes.
+
+Scope creep is real. But sometimes scope creep is the product.
+
+The success counter is real. It pulls from the database. It just never increments because 0.0001px is physically impossible to hit with any pointer device.
+
+Open source: github.com/raxxostudios/center-this-div
+Try it: center-this-div.vercel.app
+
+Built by RAXXO Studios.
+
+#WebDev #CSS #JavaScript #OpenSource #GameDev #NextJS</pre>
+    <div class="note">LinkedIn rewards story arcs. The hook ("most solved problem, made it unsolvable") is strong. Keep the hashtags minimal, 6 max. Post with a carousel or video demo if possible.</div>
+  </div>
+</div>
+
+<!-- 8. Hacker News -->
+<div class="card">
+  <div class="card-header">
+    <h3>8. Hacker News (Show HN)</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">news.ycombinator.com</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Title: Show HN: Can You Center This Div? (0.0001px threshold, nobody has ever won)
+
+URL: https://center-this-div.vercel.app
+
+---
+
+First comment (paste as your comment immediately after submission):
+
+Drag a div to the center of the screen. Success threshold: 0.0001px, roughly 5,000x smaller than a single Retina pixel. The global success counter is real, pulls from Postgres, and reads 0. It will always read 0.
+
+The interface is a JARVIS-style HUD with real-time deviation readouts, global leaderboard (Neon Postgres, serverless), radar sweep, and an Earth Scale that converts your pixel miss to kilometers. Miss by 3px? That's further than the circumference of Earth.
+
+Some implementation details:
+
+- Game measures Euclidean distance from div center to target center via Pointer Events API
+- HUD is 100% CSS (custom properties, conic-gradient radar, perspective transforms). No JS animation libraries
+- 418 easter egg: Utah teapot as a 3D point cloud (~2,500 particles), pure 2D canvas with manual projection, drag rotation, zoom, steam particles. No WebGL
+- Anti-cheat: multi-layer server-side detection, fabricated submissions get HTTP 418
+- Share cards generated client-side with Canvas API (1080x1080 Retina PNG)
+
+Stack: Next.js 16, React 19, TypeScript, Neon Postgres.
+
+Source: https://github.com/raxxostudios/center-this-div
+
+Built this for the DEV April Fools 2026 challenge. The anti-value proposition: take the most solved problem in CSS and make it unsolvable.</pre>
+    <div class="note">Submit the URL as the link. Post the comment text immediately after. HN hates hype. Keep it factual, technical, slightly self-aware. Never say "check it out" or "would love feedback."</div>
+  </div>
+</div>
+
+<!-- 9. Instagram Caption -->
+<div class="card">
+  <div class="card-header">
+    <h3>9. Instagram Caption</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">Instagram</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Centering a div is the most solved problem in CSS.
+
+So I made it unsolvable.
+
+"Can You Center This Div?" is a game where you drag a div to center. The threshold is 0.0001px. Nobody has ever won. The success counter is real. It reads 0. Forever.
+
+The whole thing is a JARVIS-style holographic HUD. Real-time readouts. Global leaderboard. And an "Earth Scale" that shows your miss in kilometers.
+
+Miss by 3 pixels? That's further than Earth's circumference.
+
+There's a hidden 418 teapot. 2,500 failure quotes. Share cards for every platform. Open source.
+
+center-this-div.vercel.app (link in bio)
+
+.
+.
+.
+#CenterThisDiv #418Challenge #webdev #css #javascript #nextjs #react #frontend #programming #developer #coding #gamedev #aprilfools #opensource #typescript #webdesign #uidesign #creativecoding #devhumor #huddesign #cssart #webdeveloper #programmerslife #codeisart #indiedev</pre>
+    <div class="note">Post as carousel: slide 1 = HUD screenshot, slide 2 = failed attempt close-up, slide 3 = Earth Scale quote, slide 4 = leaderboard, slide 5 = "Successes: 0. Ever." Use Reels for the video version.</div>
+  </div>
+</div>
+
+<!-- 10. TikTok Script -->
+<div class="card">
+  <div class="card-header">
+    <h3>10. TikTok Script</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">15-30 seconds</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>HOOK (0-3s):
+"Centering a div is easy. So I made it impossible."
+
+SETUP (3-8s):
+[Screen recording: open center-this-div.vercel.app]
+"This game has a 0.0001 pixel threshold. Nobody has ever won."
+
+DEMO (8-18s):
+[Drag the div close to center. Show HUD updating in real-time.]
+"Watch the deviation readouts. I'm at 2.4 pixels."
+[Submit attempt.]
+"NOT CENTERED. And apparently my miss is 49,000 kilometers on Earth."
+
+PAYOFF (18-25s):
+[Show leaderboard. Show success counter at 0.]
+"Global successes: zero. The counter is real. It queries the database. It just never changes."
+
+CTA (25-30s):
+"Link in bio. Try to beat my score. You won't."
+
+---
+
+TEXT OVERLAY: "The success counter will NEVER change"
+SOUND: trending audio or lo-fi beat
+CAPTION: I built a game where you center a div. The threshold is 0.0001px. Nobody has ever won. center-this-div.vercel.app #CenterThisDiv #webdev #css #coding #devhumor</pre>
+    <div class="note">Film as screen recording with voiceover. Keep energy conversational, not hype. The absurdity sells itself. Vertical format. 1080x1920.</div>
+  </div>
+</div>
+
+<!-- 11. YouTube Shorts Script -->
+<div class="card">
+  <div class="card-header">
+    <h3>11. YouTube Shorts Script</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">30 seconds</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>HOOK (0-3s):
+[Text on screen: "SUCCESS THRESHOLD: 0.0001px"]
+"Can you center a div? No. Literally no."
+
+WALKTHROUGH (3-20s):
+[Screen recording of gameplay]
+"This is a game where you drag a div to the center of the screen."
+[Show HUD with deviation readouts updating]
+"The interface tracks your deviation to six decimal places."
+[Drag div close, zoom on readouts]
+"I'm at 1.2 pixels. That sounds close."
+[Submit]
+"NOT CENTERED. And on Earth, that miss would be 24,000 kilometers."
+[Show Earth Scale quote]
+
+LEADERBOARD (20-25s):
+[Show global leaderboard]
+"These are the best attempts worldwide. The closest is 0.89px. Still 17,000x over the threshold."
+
+CLOSE (25-30s):
+[Show success counter: 0]
+"Global successes: zero. The counter is real. It pulls from the database."
+[Pause]
+"It just never increments."
+
+TITLE: Can You Center This Div? (You Can't)
+DESCRIPTION: I built a CSS centering game with a 0.0001px threshold. JARVIS HUD, global leaderboard, Earth Scale, 418 teapot easter egg. Open source.
+
+center-this-div.vercel.app
+github.com/raxxostudios/center-this-div
+
+#CenterThisDiv #CSS #WebDev #Shorts</pre>
+    <div class="note">YouTube Shorts prefers slightly more polished production than TikTok. Add text overlays for every key stat. Thumbnail: HUD with "0 SUCCESSES. EVER." text.</div>
+  </div>
+</div>
+
+<!-- 12. WhatsApp/Telegram -->
+<div class="card">
+  <div class="card-header">
+    <h3>12. WhatsApp / Telegram Forward</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">messaging</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Someone built a game where you center a div.
+
+The threshold is 0.0001 pixels. Nobody has ever won. The success counter is real. It reads 0.
+
+It tells you how far off you'd be if the target was Earth. I missed by 47,000km.
+
+Try to beat my score: center-this-div.vercel.app</pre>
+    <div class="note">Short, personal, no branding. Feels like a friend sharing something. Change "47,000km" to your actual score. Send to dev groups, work chats, and that friend who said "centering divs is easy."</div>
+  </div>
+</div>
+
+<!-- 13. Discord -->
+<div class="card">
+  <div class="card-header">
+    <h3>13. Discord Server Post</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">dev communities</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>**Can You Center This Div?**
+
+I built a game where you drag a div to the exact center of the screen. Sounds easy. The threshold is 0.0001 pixels.
+
+Nobody has ever won. Global successes: 0. The counter is real.
+
+It has a full JARVIS-style HUD, global leaderboard, Earth Scale (your pixel miss converted to real-world kilometers), and a hidden 418 teapot easter egg.
+
+My best attempt missed by 47,000km on Earth. The leaderboard leader sits at 0.89px. Still 17,000x over the threshold.
+
+**Play:** https://center-this-div.vercel.app
+**Source:** https://github.com/raxxostudios/center-this-div
+
+Drop your scores below. Let's see who gets closest. Spoiler: nobody will get close enough.
+
+Stack: Next.js 16, React 19, Neon Postgres, pure CSS HUD. Open source.</pre>
+    <div class="note">Post in #showcase, #projects, or #off-topic channels. Target servers: Theo's T3, Fireship, Reactiflux, Next.js Discord, Vercel Community, The Coding Den, Buildspace. Engage with replies.</div>
+  </div>
+</div>
+
+<!-- 14. ProductHunt -->
+<div class="card">
+  <div class="card-header">
+    <h3>14. ProductHunt</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">producthunt.com</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Name: Can You Center This Div?
+
+Tagline: Drag a div to center. Threshold: 0.0001px. Nobody has ever won.
+
+Description:
+The most overengineered centering challenge on the internet. Drag a div to the exact center of the screen against a 0.0001px threshold. That's 5,000x smaller than a single Retina pixel.
+
+Features:
+- JARVIS-style HUD with real-time 60fps deviation readouts
+- Global leaderboard tracking closest attempts worldwide (Neon Postgres)
+- Earth Scale: your pixel miss translated to real-world kilometers
+- 2,500+ unique quotes based on how far off you are
+- Hidden 418 teapot easter egg (3D particle cloud with steam)
+- Share cards for every platform (1080x1080 Retina PNG)
+- Anti-cheat (multi-layer detection, HTTP 418 for fabricated submissions)
+- Light and dark mode
+- Open source
+
+The global success counter reads 0. It queries the database. It will always read 0.
+
+Built with Next.js 16, React 19, TypeScript, Neon Postgres, and pure CSS. No animation libraries.
+
+Topics: Open Source, Games, Developer Tools, Fun, Web App
+
+---
+
+Maker comment:
+
+I built this for the DEV April Fools 2026 challenge. It started as a joke about CSS centering being "the hardest problem in web development."
+
+Then it got a leaderboard. Then a radar sweep with live player blips. Then an Earth Scale that converts your pixel miss to kilometers. Then a 3D teapot easter egg. Then 2,500 failure quotes.
+
+The success counter is real. It queries the database on every page load. It just never increments because 0.0001px is physically impossible to hit with any pointer device. The anti-cheat also blocks anything suspiciously close with HTTP 418.
+
+Current leaderboard leader: 0.89px. For context, you need 0.0001px. They're 8,900x over.
+
+Try it: center-this-div.vercel.app
+Source: github.com/raxxostudios/center-this-div
+
+Happy to answer any questions about the build.</pre>
+    <div class="note">Schedule for April 2 at 00:01 PST. Use the GIF as the hero media. Gallery: HUD screenshot, leaderboard, Earth Scale, 418 teapot, share card example. Ask 5+ people to leave genuine comments on launch day.</div>
+  </div>
+</div>
+
+<!-- 15. Email Newsletter -->
+<div class="card">
+  <div class="card-header">
+    <h3>15. Email Newsletter</h3>
+    <div class="card-header-right">
+      <span class="platform-tag">email</span>
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Subject: Can you center a div? (No. You can't.)
+
+Preheader: 0.0001px threshold. 0 successes. Ever.
+
+---
+
+Centering a div is the most solved problem in CSS.
+
+We made it unsolvable.
+
+"Can You Center This Div?" is a precision challenge with a 0.0001px success threshold. That's 5,000x smaller than a single Retina pixel. The global success counter reads 0 and it always will.
+
+The interface is a JARVIS-style holographic HUD. It tracks your deviation in real time, ranks you on a global leaderboard, and tells you how far off you'd be if the target was Earth.
+
+Miss by 3 pixels? That's 49,000 kilometers. Further than Earth's circumference.
+
+Features you didn't ask for:
+- Real-time deviation readouts at 60fps
+- Global leaderboard (Neon Postgres)
+- Earth Scale with handwritten quotes per distance tier
+- 2,500+ unique failure quotes
+- Hidden 418 teapot easter egg (3D particle cloud with steam)
+- Share cards for every platform
+- Anti-cheat (multi-layer detection, fabricated values get HTTP 418)
+- Light and dark mode
+
+[PLAY THE GAME] center-this-div.vercel.app
+
+[VIEW SOURCE] github.com/raxxostudios/center-this-div
+
+Built by RAXXO Studios for the DEV April Fools 2026 challenge.
+
+Fair warning: nobody has ever won. The counter is real. It queries the database. It just never changes.
+
+Reply with your score. We want to see how badly you failed.
+
+P.S. There's a drinking game version. Take a sip every time you submit. Finish your drink if someone centers it. (Your drink is safe.)</pre>
+    <div class="note">Send at Launch day, April 3. Subject line is the hook. Include a GIF or screenshot above the fold. The [PLAY THE GAME] line should be a big CTA button in your email tool.</div>
+  </div>
+</div>
+
+<!-- EXTRA SUBREDDITS + QUICK POST LINKS -->
+<div class="card" id="quick-links">
+  <h3>Quick Post Links (click, paste, post)</h3>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+    <span style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid #4ade80;border-radius:8px;color:#4ade80;text-decoration:none;font-family:var(--mono);font-size:12px;opacity:0.5">X/Twitter DONE</span>
+    <a href="https://www.linkedin.com/feed/?shareActive=true" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid #0a66c2;border-radius:8px;color:#0a66c2;text-decoration:none;font-family:var(--mono);font-size:12px">LinkedIn (personal)</a>
+    <a href="https://news.ycombinator.com/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid #ff6600;border-radius:8px;color:#ff6600;text-decoration:none;font-family:var(--mono);font-size:12px">Hacker News</a>
+    <a href="https://www.reddit.com/r/webdev/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/webdev</a>
+    <a href="https://www.reddit.com/r/ProgrammerHumor/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/ProgrammerHumor</a>
+    <a href="https://www.reddit.com/r/javascript/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/javascript</a>
+    <a href="https://www.reddit.com/r/nextjs/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/nextjs</a>
+    <a href="https://www.reddit.com/r/css/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/css</a>
+    <a href="https://www.reddit.com/r/reactjs/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/reactjs</a>
+    <a href="https://www.reddit.com/r/SideProject/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/SideProject</a>
+    <a href="https://www.reddit.com/r/InternetIsBeautiful/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/InternetIsBeautiful</a>
+    <a href="https://www.reddit.com/r/WebGames/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/WebGames</a>
+    <a href="https://www.reddit.com/r/IndieGaming/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/IndieGaming</a>
+    <a href="https://www.reddit.com/r/opensource/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/opensource</a>
+    <a href="https://www.reddit.com/r/ClaudeAI/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--lime);border-radius:8px;color:var(--lime);text-decoration:none;font-family:var(--mono);font-size:12px">r/ClaudeAI</a>
+    <a href="https://www.reddit.com/r/artificial/submit" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);text-decoration:none;font-family:var(--mono);font-size:12px">r/artificial</a>
+    <a href="https://www.producthunt.com/posts/new" target="_blank" rel="noopener" style="display:flex;align-items:center;gap:8px;padding:10px 16px;background:var(--surface);border:1px solid var(--red);border-radius:8px;color:var(--red);text-decoration:none;font-family:var(--mono);font-size:12px">ProductHunt (tomorrow)</a>
+  </div>
+
+  <h3 style="margin-top:24px">Extra Post Copy</h3>
+
+  <div class="card" style="margin-top:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--lime)">r/nextjs</span>
+      <button class="copy-btn" onclick="copyPre(this)">Copy</button>
+    </div>
+    <pre>Built a JARVIS HUD centering game with Next.js 16.
+
+0.0001px threshold. Pure CSS animations (radar sweep, floating labels, scan lines, pulsing rings). Neon Postgres global leaderboard. Hidden 418 teapot easter egg made of 2,500 particles.
+
+Single custom hook for all game logic. Four API routes. Zero animation libraries.
+
+center-this-div.vercel.app
+Source: github.com/raxxostudios/center-this-div</pre>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--lime)">r/css</span>
+      <button class="copy-btn" onclick="copyPre(this)">Copy</button>
+    </div>
+    <pre>Pure CSS JARVIS HUD. No animation libraries.
+
+Radar sweep: conic-gradient + rotate transform.
+Floating labels: translateX/Y keyframes with opacity.
+Scan line: linear-gradient animating top.
+Target rings: border-radius 50% with scale pulse.
+Grid dots: repeating radial-gradient.
+Measurement lines: repeating-linear-gradient dashed.
+
+120 lines of CSS. 60fps. GPU-accelerated.
+
+See it live: center-this-div.vercel.app
+Source: github.com/raxxostudios/center-this-div</pre>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:var(--mono);font-size:11px;color:var(--lime)">r/ClaudeAI + r/artificial</span>
+      <button class="copy-btn" onclick="copyPre(this)">Copy</button>
+    </div>
+    <pre>Built a full game with Claude Code in one session.
+
+"Can You Center This Div?" is a precision CSS centering challenge with a JARVIS-style HUD. 0.0001px threshold. Global leaderboard. 2,500+ handwritten Earth scale quotes. A hidden 418 teapot easter egg made of 2,500 particles that you can drag, rotate, and zoom.
+
+The whole thing: game logic, HUD design, database schema, API routes, share card generator, 3-layer anti-cheat with HMAC tokens, product launch. One conversation.
+
+Play: center-this-div.vercel.app
+Source: github.com/raxxostudios/center-this-div</pre>
+  </div>
+
+  <div class="card" style="margin-top:12px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <span style="font-family:var(--mono);font-size:11px;color:#0a66c2">LinkedIn (personal tone)</span>
+      <button class="copy-btn" onclick="copyPre(this)">Copy</button>
+    </div>
+    <pre>I spent an evening building a game nobody can win.
+
+"Can You Center This Div?" asks one question: can you drag a div to the exact center of the screen? The success threshold is 0.0001 pixels. That is 5,000x smaller than a pixel on a Retina display.
+
+Nobody has ever succeeded. The counter reads 0. It always will.
+
+I wrapped it in a JARVIS-style holographic HUD because if you are going to fail, you should fail beautifully. Real-time deviation readouts at 60fps. A global leaderboard. An Earth Scale feature that translates your pixel miss into real-world distance. Miss by 2.4 pixels? That is further than Amsterdam to Berlin.
+
+2,500+ handwritten quotes. A hidden 418 teapot easter egg. Share cards for every platform.
+
+Built with Next.js 16, Neon Postgres, and pure CSS. Zero animation libraries. Open source.
+
+Built for the DEV April Fools 2026 challenge. My first game. Probably my last.
+
+Try it: center-this-div.vercel.app
+Source: github.com/raxxostudios/center-this-div</pre>
+  </div>
+</div>
+
+
+<!-- ===================== PART 3: DRINKING GAME ===================== -->
+<div class="section" id="drinking">
+  <div class="section-header">
+    <div class="section-number">03</div>
+    <h2>Drinking Game</h2>
+    <span class="section-desc">Share as a standalone card.</span>
+  </div>
+</div>
+
+<div class="drinking-game">
+  <h3>CAN YOU CENTER THIS DIV</h3>
+  <div class="dg-sub">THE DRINKING GAME</div>
+
+  <div class="card-header" style="border-radius: 8px 8px 0 0; margin: 0 -16px;">
+    <h3 style="font-size: 11px;">Full rules card</h3>
+    <button class="copy-btn" onclick="copyDrinkingGame(this)">Copy</button>
+  </div>
+
+  <div class="dg-section" style="margin-top: 16px;">
+    <h4>Setup</h4>
+    <ul>
+      <li>Open center-this-div.vercel.app on every player's phone</li>
+      <li>Everyone needs a drink (beer, cocktail, or non-alcoholic, your call)</li>
+      <li>Designate one screen as the "leaderboard monitor" if you have a laptop</li>
+    </ul>
+  </div>
+
+  <div class="dg-section">
+    <h4>Take a Sip</h4>
+    <ul>
+      <li>Every time you submit an attempt</li>
+      <li>Every time the quote roasts you personally</li>
+      <li>Every time you say "I was SO close"</li>
+      <li>Every time your Earth Scale miss is larger than a country</li>
+      <li>Every time the precision meter drops to "LOST"</li>
+    </ul>
+  </div>
+
+  <div class="dg-section">
+    <h4>Take Two Sips</h4>
+    <ul>
+      <li>Your score is worse than your previous attempt</li>
+      <li>Someone on the leaderboard beats you while you're watching</li>
+      <li>Your Earth Scale miss is further than the Moon (384,400km)</li>
+      <li>You accidentally submit before dragging the div at all</li>
+      <li>You blame your screen size instead of your skill</li>
+    </ul>
+  </div>
+
+  <div class="dg-section">
+    <h4 class="red">Finish Your Drink</h4>
+    <ul>
+      <li>If someone gets below 1px (they won't)</li>
+      <li>If the success counter ever shows anything other than 0</li>
+      <li>If someone actually centers the div (impossible, your drink is safe)</li>
+    </ul>
+  </div>
+
+  <div class="dg-section">
+    <h4 class="lime">Shot</h4>
+    <ul>
+      <li>If you find the hidden 418 teapot</li>
+      <li>If the server returns HTTP 418 to your submission</li>
+      <li>If you rage-quit and close the tab (witnessed by the group)</li>
+    </ul>
+  </div>
+
+  <div class="dg-section">
+    <h4>Waterfall</h4>
+    <ul>
+      <li>Everyone submits at the same time. Worst score starts the waterfall.</li>
+      <li>Best score picks the next round's drink</li>
+    </ul>
+  </div>
+
+  <div class="dg-section">
+    <h4>Bonus: Tournament Mode</h4>
+    <ul>
+      <li>3 rounds per player. Best single score counts.</li>
+      <li>Loser of the tournament buys the next round</li>
+      <li>Winner gets to brag about being the least bad at centering a div</li>
+    </ul>
+  </div>
+
+  <div style="text-align: center; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border);">
+    <p style="font-family: var(--mono); font-size: 11px; color: var(--muted);">DISCLAIMER: Nobody has ever centered the div. The counter reads 0. It will always read 0. Your drink is safe. Probably.</p>
+    <p style="font-family: var(--mono); font-size: 11px; color: var(--dim); margin-top: 8px;">center-this-div.vercel.app / RAXXO Studios</p>
+  </div>
+</div>
+
+
+<!-- ===================== PART 4: VIRAL AD SCRIPTS ===================== -->
+<div class="section" id="ads">
+  <div class="section-header">
+    <div class="section-number">04</div>
+    <h2>Viral Ad Scripts</h2>
+    <span class="section-desc">15-30s each. Ready for TikTok/Reels/Shorts.</span>
+  </div>
+</div>
+
+<div class="ad-script">
+  <div class="ad-script-header">
+    <div>
+      <div class="ad-script-title">1. "The Interview"</div>
+    </div>
+    <div class="card-header-right">
+      <span class="ad-script-duration">20 seconds</span>
+      <button class="copy-btn" onclick="copyAdScript(this)">Copy</button>
+    </div>
+  </div>
+  <div class="ad-script-body">
+    <p class="direction">[Office setting. Two people at a table. Interview vibes.]</p>
+    <br>
+    <p><span class="dialogue">INTERVIEWER:</span> "So. Can you center a div?"</p>
+    <br>
+    <p><span class="dialogue">CANDIDATE:</span> <span class="direction">(confident smile)</span> "Of course."</p>
+    <br>
+    <p class="action">[SMASH CUT to: game screen. Candidate drags the div. Submits.]</p>
+    <br>
+    <p class="action">[HUD slams in: "NOT CENTERED." Deviation: 4.271893px.]</p>
+    <br>
+    <p class="action">[Earth Scale: "Your miss would be 87,000km. Roughly twice around the planet."]</p>
+    <br>
+    <p><span class="dialogue">INTERVIEWER:</span> <span class="direction">(long pause)</span> "We'll be in touch."</p>
+    <br>
+    <p class="action">[Cut to black. Text: "center-this-div.vercel.app"]</p>
+    <p class="action">[Text: "Successes: 0. Ever."]</p>
+  </div>
+</div>
+
+<div class="ad-script">
+  <div class="ad-script-header">
+    <div>
+      <div class="ad-script-title">2. "The Breakup"</div>
+    </div>
+    <div class="card-header-right">
+      <span class="ad-script-duration">20 seconds</span>
+      <button class="copy-btn" onclick="copyAdScript(this)">Copy</button>
+    </div>
+  </div>
+  <div class="ad-script-body">
+    <p class="direction">[Dramatic lighting. Two people sitting across from each other. Tension.]</p>
+    <br>
+    <p><span class="dialogue">PERSON A:</span> "We need to talk."</p>
+    <br>
+    <p><span class="dialogue">PERSON B:</span> "What did I do?"</p>
+    <br>
+    <p><span class="dialogue">PERSON A:</span> "It is not you. It is your CSS."</p>
+    <br>
+    <p class="action">[Cut to: game screen. Person B's attempt. Deviation: 12.847px.]</p>
+    <br>
+    <p class="action">[Earth Scale: "263,000km. You missed by the distance to the Moon."]</p>
+    <br>
+    <p><span class="dialogue">PERSON A:</span> "You said you could center a div."</p>
+    <br>
+    <p><span class="dialogue">PERSON B:</span> <span class="direction">(tearing up)</span> "I thought I could."</p>
+    <br>
+    <p class="action">[Cut to black. Text: "center-this-div.vercel.app"]</p>
+    <p class="action">[Text: "Your relationship is over. The div is still not centered."]</p>
+  </div>
+</div>
+
+<div class="ad-script">
+  <div class="ad-script-header">
+    <div>
+      <div class="ad-script-title">3. "Mission Control"</div>
+    </div>
+    <div class="card-header-right">
+      <span class="ad-script-duration">25 seconds</span>
+      <button class="copy-btn" onclick="copyAdScript(this)">Copy</button>
+    </div>
+  </div>
+  <div class="ad-script-body">
+    <p class="direction">[NASA-style control room. Multiple screens. Headsets. Everyone looks serious.]</p>
+    <br>
+    <p><span class="dialogue">FLIGHT DIRECTOR:</span> "Status report."</p>
+    <br>
+    <p><span class="dialogue">ENGINEER 1:</span> "We have deviation. 2.4 pixels on the X axis."</p>
+    <br>
+    <p class="direction">[Murmuring. Someone drops a coffee cup.]</p>
+    <br>
+    <p><span class="dialogue">ENGINEER 2:</span> "That's... 49,000 kilometers on Earth Scale."</p>
+    <br>
+    <p><span class="dialogue">FLIGHT DIRECTOR:</span> <span class="direction">(standing up slowly)</span> "Get me the President."</p>
+    <br>
+    <p class="direction">[Alarms start blaring. Red lights. Everyone panicking.]</p>
+    <br>
+    <p><span class="dialogue">ENGINEER 1:</span> "Sir, the div... it is not centered."</p>
+    <br>
+    <p><span class="dialogue">FLIGHT DIRECTOR:</span> "It never was."</p>
+    <br>
+    <p class="action">[Cut to black. Text: "center-this-div.vercel.app"]</p>
+    <p class="action">[Text: "Houston, we have a problem. It is 0.0001 pixels wide."]</p>
+  </div>
+</div>
+
+<div class="ad-script">
+  <div class="ad-script-header">
+    <div>
+      <div class="ad-script-title">4. "The Documentary"</div>
+    </div>
+    <div class="card-header-right">
+      <span class="ad-script-duration">25 seconds</span>
+      <button class="copy-btn" onclick="copyAdScript(this)">Copy</button>
+    </div>
+  </div>
+  <div class="ad-script-body">
+    <p class="direction">[Ken Burns style. Slow pan over a keyboard. Soft piano music. Gravelly narrator voice.]</p>
+    <br>
+    <p><span class="dialogue">NARRATOR:</span> "In 2026, humanity faced its greatest challenge."</p>
+    <br>
+    <p class="direction">[Slow zoom on the game screen. The div sits slightly off-center.]</p>
+    <br>
+    <p><span class="dialogue">NARRATOR:</span> "They were asked to center a div."</p>
+    <br>
+    <p class="direction">[Montage: different players trying. Submitting. Failing. Hands on heads. Disbelief.]</p>
+    <br>
+    <p><span class="dialogue">NARRATOR:</span> "The threshold was 0.0001 pixels. Five thousand times smaller than what the eye can see."</p>
+    <br>
+    <p class="direction">[Show the success counter: 0.]</p>
+    <br>
+    <p><span class="dialogue">NARRATOR:</span> "They failed. All of them."</p>
+    <br>
+    <p class="direction">[Long pause. Piano stops.]</p>
+    <br>
+    <p><span class="dialogue">NARRATOR:</span> "The counter still reads zero."</p>
+    <br>
+    <p class="action">[Cut to black. Text: "center-this-div.vercel.app"]</p>
+    <p class="action">[Text: "A RAXXO Studios production."]</p>
+  </div>
+</div>
+
+<div class="ad-script">
+  <div class="ad-script-header">
+    <div>
+      <div class="ad-script-title">5. "Tech Bro Pitch"</div>
+    </div>
+    <div class="card-header-right">
+      <span class="ad-script-duration">25 seconds</span>
+      <button class="copy-btn" onclick="copyAdScript(this)">Copy</button>
+    </div>
+  </div>
+  <div class="ad-script-body">
+    <p class="direction">[Startup pitch deck energy. Someone in a Patagonia vest standing next to a TV screen. Confident. Too confident.]</p>
+    <br>
+    <p><span class="dialogue">FOUNDER:</span> "We are disrupting the centering space."</p>
+    <br>
+    <p class="action">[Slide: "Total Addressable Market: Every div on the internet."]</p>
+    <br>
+    <p><span class="dialogue">FOUNDER:</span> "Our proprietary algorithm achieves centering precision at the sub-pixel level."</p>
+    <br>
+    <p class="action">[Slide: "Success Rate" with a big 0%.]</p>
+    <br>
+    <p><span class="dialogue">FOUNDER:</span> <span class="direction">(not acknowledging the 0%)</span> "We have strong product-market fit."</p>
+    <br>
+    <p class="action">[Slide: User chart going up. Revenue chart blank.]</p>
+    <br>
+    <p><span class="dialogue">FOUNDER:</span> "We are seeking 5 million in Series A funding to solve what CSS could not."</p>
+    <br>
+    <p class="direction">[VC in the audience raises hand.]</p>
+    <br>
+    <p><span class="dialogue">VC:</span> "Has anyone ever... actually centered it?"</p>
+    <br>
+    <p class="direction">[Long silence.]</p>
+    <br>
+    <p><span class="dialogue">FOUNDER:</span> "Next slide."</p>
+    <br>
+    <p class="action">[Cut to black. Text: "center-this-div.vercel.app"]</p>
+    <p class="action">[Text: "Pre-revenue. Pre-success. Pre-everything."]</p>
+  </div>
+</div>
+
+
+<!-- ===================== PART 5: MEME PROMPTS ===================== -->
+<div class="section" id="memes">
+  <div class="section-header">
+    <div class="section-number">05</div>
+    <h2>Meme Prompts</h2>
+    <span class="section-desc">AI image generation prompts. Copy and paste into your tool of choice.</span>
+  </div>
+</div>
+
+<div class="meme-grid">
+  <div class="meme-card">
+    <div class="meme-number">01</div>
+    <p>Astronaut floating in space looking at Earth through a helmet visor. Earth has a glowing CSS grid overlay with measurement lines. A small red dot slightly off-center. Caption in monospace font at the bottom: "STILL NOT CENTERED." Dark, cinematic, high contrast.</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+
+  <div class="meme-card">
+    <div class="meme-number">02</div>
+    <p>Medieval illuminated manuscript painting. Monks in robes gathered around a parchment scroll, pointing at something slightly off-center on the scroll. Holographic JARVIS-style HUD elements overlaid on the medieval scene. One monk has his head in his hands. Caption: "Deviation: 3.847px. The monastery weeps."</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+
+  <div class="meme-card">
+    <div class="meme-number">03</div>
+    <p>Crime scene investigation. Yellow police tape. CSI agents in white suits examining a laptop screen with flashlights and magnifying glasses. On the laptop screen: a div that is 2.4px off center. Evidence markers on the floor. One detective shaking his head. Very dramatic, blue/red police lighting. Caption: "The div was found 2.4px from center. No survivors."</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+
+  <div class="meme-card">
+    <div class="meme-number">04</div>
+    <p>Corporate job interview scene. Interviewer in a suit sitting across from a nervous candidate. A whiteboard behind them reads "SENIOR FRONTEND DEVELOPER." Interviewer is sliding a laptop across the table. The laptop screen shows center-this-div.vercel.app. The candidate is visibly sweating. Photorealistic, office lighting. Caption: "Can you center this div?"</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+
+  <div class="meme-card">
+    <div class="meme-number">05</div>
+    <p>University graduation ceremony. Graduate in cap and gown receiving a diploma from a dean on stage. Close-up of the diploma. Instead of a degree, the diploma reads "NOT CENTERED" in glitch text, with "Deviation: 7.291px" underneath. The graduate is smiling, hasn't read it yet. Caption: "Congratulations on your degree in almost centering a div."</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+
+  <div class="meme-card">
+    <div class="meme-number">06</div>
+    <p>Renaissance painting in the style of "The Creation of Adam" by Michelangelo. Two hands reaching toward each other. Between the fingers: a tiny green div, slightly off-center. Holographic measurement lines showing the gap. Caption: "0.89px. So close. Not close enough." Dramatic ceiling fresco style.</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+
+  <div class="meme-card">
+    <div class="meme-number">07</div>
+    <p>Therapist's office. Patient lying on a couch. Therapist taking notes. A thought bubble above the patient's head showing the game screen with "NOT CENTERED" in red. The therapist's notepad reads: "Still talking about the div. Week 47." Warm, indoor lighting. Caption: "And that's when I realized 0.0001 pixels would haunt me forever."</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+
+  <div class="meme-card">
+    <div class="meme-number">08</div>
+    <p>News broadcast breaking news screen. Serious anchor at the desk. Lower third chyron reads: "BREAKING: GLOBAL SUCCESS COUNTER STILL READS 0." In the background, a live feed of the leaderboard. Second chyron: "Scientists confirm: 0.0001px threshold physically impossible." Dramatic news studio lighting.</p>
+    <button class="copy-btn meme-copy" onclick="copyMeme(this)">Copy</button>
+  </div>
+</div>
+
+
+<!-- ===================== PART 6: ENGAGEMENT HOOKS ===================== -->
+<div class="section" id="engagement">
+  <div class="section-header">
+    <div class="section-number">06</div>
+    <h2>Engagement Hooks</h2>
+    <span class="section-desc">Recurring content formats. Reuse daily/weekly.</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Challenge Format</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>I got X.XXpx from center in "Can You Center This Div?"
+
+If the target was Earth, I missed by XX,XXXkm. "[Earth Scale quote here]"
+
+Rank #XX of XXX. Successes: 0. Ever.
+
+Can you beat me? center-this-div.vercel.app</pre>
+    <div class="note">Replace X values with your actual score. Post after every attempt. The competitive angle drives engagement.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Daily Update Format</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Day X: Still nobody has centered the div.
+
+Today's leaderboard update:
+- #1: X.XXpx (Country flag)
+- #2: X.XXpx (Country flag)
+- #3: X.XXpx (Country flag)
+
+Total attempts: XXX
+Global successes: 0
+
+The closest anyone has gotten is X.XXpx. You need 0.0001px. They're XX,XXXx over.
+
+center-this-div.vercel.app</pre>
+    <div class="note">Post daily for the first week. Weekly after that. Screenshot the leaderboard. The "Day X" counter builds narrative tension.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Earth Scale Quote of the Day</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Earth Scale Quote of the Day:
+
+"[Player] scored X.XXpx. On Earth, that's XX,XXXkm."
+
+"[Earth Scale quote, e.g. '700km. The distance from Amsterdam to Berlin.']"
+
+Global successes: still 0.
+
+center-this-div.vercel.app</pre>
+    <div class="note">Pull the best/funniest Earth Scale results from the leaderboard. Great for Twitter/Instagram stories.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Leaderboard Screenshot Share</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Current leaderboard for "Can You Center This Div?"
+
+These are the best CSS engineers on Earth. The closest is X.XXpx.
+
+They need 0.0001px.
+
+They are XX,XXXx over the threshold.
+
+The success counter reads 0.
+
+center-this-div.vercel.app</pre>
+    <div class="note">Attach a screenshot of the leaderboard. Highlight the gap between the best score and the threshold. The absurd multiplier (e.g., "8,900x over") is the hook.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Milestone Announcements</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>MILESTONE OPTIONS (use when reached):
+
+"100 attempts. 0 successes."
+"500 attempts. 0 successes. The div remains uncentered."
+"1,000 people have tried to center this div. 1,000 people have failed."
+"Someone from [Country] just took the #1 spot with X.XXpx. Still 8,900x over the threshold."
+"New record: X.XXpx. The closest anyone has ever been. Still not close enough."
+"We passed 10,000 attempts. The success counter reads 0. It will always read 0."
+
+center-this-div.vercel.app</pre>
+    <div class="note">Post milestones as they happen. Each one reinforces the "0 successes" narrative. Great for all platforms.</div>
+  </div>
+</div>
+
+
+<!-- ===================== PART 7: INFLUENCER OUTREACH ===================== -->
+<div class="section" id="outreach">
+  <div class="section-header">
+    <div class="section-number">07</div>
+    <h2>Influencer Outreach</h2>
+    <span class="section-desc">Template DM/email. Personalize for each recipient.</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Short DM (Twitter/Discord)</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Hey [Name], built something your audience might enjoy: a game where you center a div with a 0.0001px threshold. Nobody has ever won. JARVIS-style HUD, global leaderboard, Earth Scale that converts your pixel miss to kilometers. Open source.
+
+center-this-div.vercel.app
+
+No ask, just thought you'd find it funny. If you try it, I'd love to see your score.</pre>
+    <div class="note">Keep it short. No "partnership inquiry" or "collaboration opportunity" language. Just share it like a friend. Personalize the first line based on their content.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Longer Email</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Subject: A game where nobody can center a div (open source, your audience would love it)
+
+Hey [Name],
+
+I'm [RAXXO Studios]. Built something your audience would get a kick out of.
+
+"Can You Center This Div?" is a precision game where you drag a div to the exact center of the screen. The success threshold is 0.0001 pixels. That's 5,000x smaller than a Retina pixel. Nobody has ever won.
+
+What makes it interesting for your audience:
+- Full JARVIS-style HUD with 60fps deviation readouts
+- Global leaderboard (Neon Postgres, tracks closest attempts worldwide)
+- Earth Scale that converts your pixel miss to real-world kilometers
+- Hidden 418 teapot easter egg (3D particle cloud, pure canvas, no WebGL)
+- 2,500+ unique failure quotes
+- Open source: github.com/raxxostudios/center-this-div
+
+The competitive angle works well for content: "I got X.XXpx, can you beat me?" Plus the Earth Scale results are inherently shareable ("I missed by 47,000km").
+
+No partnership ask. If you try it and want to share, the game generates share cards automatically. And if you make content about it, I'll reshare.
+
+center-this-div.vercel.app
+
+Best,
+RAXXO Studios</pre>
+    <div class="note">Target list: Theo (t3.gg), Fireship, Web Dev Simplified, Kevin Powell, ThePrimeagen, Traversy Media, Jack Herrington, James Q Quick, Lee Robinson (Vercel). Personalize the opening for each. Send from the studio email, not personal.</div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Ready-to-Share Assets Checklist</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>Assets to have ready when influencers ask:
+
+1. OG image (1200x630) - HUD screenshot with key stats
+2. Square share card (1080x1080) - for Instagram/Twitter
+3. GIF demo (5-10s loop) - gameplay showing drag, submit, result
+4. Video demo (15-30s) - with voiceover, for TikTok/Reels
+5. Logo + wordmark - "Can You Center This Div?" branding
+6. Screenshot set:
+   - Full HUD view
+   - Failed attempt result card
+   - Leaderboard
+   - Earth Scale quote
+   - 418 teapot easter egg
+7. One-liner descriptions (various lengths):
+   - 10 words: "Center a div. 0.0001px threshold. Nobody has won."
+   - 25 words: "A precision game where you drag a div to center. 0.0001px threshold. JARVIS HUD, global leaderboard, Earth Scale. Nobody has ever won."
+   - 50 words: [use the ProductHunt tagline + description]</pre>
+    <div class="note">Have all assets in a public folder or Google Drive link ready to share when someone wants to cover the project. Speed matters for influencer outreach.</div>
+  </div>
+</div>
+
+
+<!-- ===================== PART 8: HASHTAG STRATEGY ===================== -->
+<div class="section" id="hashtags">
+  <div class="section-header">
+    <div class="section-number">08</div>
+    <h2>Hashtag Strategy</h2>
+    <span class="section-desc">Platform-specific tag sets.</span>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Primary Tags</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div style="padding: 20px;">
+      <div class="tag-cloud">
+        <span class="tag primary">#CenterThisDiv</span>
+        <span class="tag primary">#418Challenge</span>
+      </div>
+      <p style="font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 8px;">Use on EVERY post across all platforms. These are the brand tags.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Secondary Tags</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <div style="padding: 20px;">
+      <div class="tag-cloud">
+        <span class="tag secondary">#CSS</span>
+        <span class="tag secondary">#WebDev</span>
+        <span class="tag secondary">#DevChallenge</span>
+        <span class="tag secondary">#OpenSource</span>
+        <span class="tag secondary">#JavaScript</span>
+        <span class="tag secondary">#AprilFools</span>
+      </div>
+      <p style="font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: 8px;">Use 2-4 of these alongside the primary tags. Context-dependent.</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Platform-Specific Tag Sets</h3>
+    <div class="card-header-right">
+      <button class="copy-btn" onclick="copyCard(this)">Copy</button>
+    </div>
+  </div>
+  <div class="card-body">
+    <pre>TWITTER/X (max 3-5):
+#CenterThisDiv #418Challenge #WebDev #CSS #AprilFools
+
+INSTAGRAM (up to 25):
+#CenterThisDiv #418Challenge #webdev #css #javascript #nextjs #react #frontend #programming #developer #coding #gamedev #aprilfools #opensource #typescript #webdesign #uidesign #creativecoding #devhumor #huddesign #cssart #webdeveloper #programmerslife #codeisart #indiedev
+
+LINKEDIN (max 5-6):
+#WebDev #CSS #JavaScript #OpenSource #GameDev #NextJS
+
+TIKTOK (4-6 in caption):
+#CenterThisDiv #webdev #css #coding #devhumor #aprilfools
+
+YOUTUBE (in description):
+#CenterThisDiv #CSS #WebDev #Shorts #JavaScript #NextJS #OpenSource
+
+DEV.TO (in frontmatter):
+devchallenge, 418challenge, showdev, javascript, css
+
+REDDIT:
+No hashtags. Reddit hates them. Use flair where available.
+
+HACKER NEWS:
+No hashtags. No flair. Just the URL and facts.
+
+DISCORD:
+No hashtags. Bold **keywords** instead.</pre>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <h3>Hashtag Rules</h3>
+  </div>
+  <div class="card-body">
+    <pre>1. ALWAYS include #CenterThisDiv on platforms that use hashtags
+2. ALWAYS include #418Challenge on platforms that use hashtags
+3. Never use more tags than the platform norm (Twitter: 3-5, IG: 15-25, LinkedIn: 5-6)
+4. Never use hashtags on Reddit or Hacker News
+5. Put Instagram hashtags after a line break gap (the "." separator trick)
+6. On LinkedIn, put hashtags at the very end, not inline
+7. On TikTok, include hashtags in the caption, not overlaid on video
+8. Track #CenterThisDiv engagement weekly to see if people are using it organically</pre>
+  </div>
+</div>
+
+
+<!-- ===================== FOOTER ===================== -->
+<div class="footer">
+  <p class="zero">Successes: 0. Ever.</p>
+  <p style="margin-top: 16px;">
+    <a href="https://center-this-div.vercel.app" target="_blank" rel="noopener">center-this-div.vercel.app</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://github.com/raxxostudios/center-this-div" target="_blank" rel="noopener">GitHub</a>
+    &nbsp;&middot;&nbsp;
+    <a href="https://raxxo.shop" target="_blank" rel="noopener">RAXXO Studios</a>
+  </p>
+  <p style="margin-top: 16px; color: var(--dim); font-size: 11px;">Campaign deck. Internal use. Copy what you need. Ship it.</p>
+</div>
+
+</div><!-- end container -->
+
+<!-- Toast notification -->
+<div class="toast" id="toast">Copied to clipboard</div>
+
+<script>
+// ===== COPY FUNCTIONS =====
+function showToast(msg) {
+  const toast = document.getElementById('toast');
+  toast.textContent = msg || 'Copied to clipboard';
+  toast.classList.add('show');
+  setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+function copyToClipboard(text, btn) {
+  navigator.clipboard.writeText(text).then(() => {
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    showToast();
+  }).catch(() => {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = 'Copied';
+      btn.classList.add('copied');
+      setTimeout(() => { btn.textContent = orig; btn.classList.remove('copied'); }, 2000);
+    }
+    showToast();
+  });
+}
+
+function copyCard(btn) {
+  const card = btn.closest('.card');
+  const pre = card.querySelector('pre');
+  copyToClipboard(pre.textContent, btn);
+}
+
+function copyAdScript(btn) {
+  const script = btn.closest('.ad-script');
+  const body = script.querySelector('.ad-script-body');
+  copyToClipboard(body.textContent.trim(), btn);
+}
+
+function copyMeme(btn) {
+  const card = btn.closest('.meme-card');
+  const p = card.querySelector('p');
+  copyToClipboard(p.textContent, btn);
+}
+
+function copyDrinkingGame(btn) {
+  const game = btn.closest('.drinking-game');
+  const sections = game.querySelectorAll('.dg-section');
+  let text = 'CAN YOU CENTER THIS DIV: THE DRINKING GAME\n\n';
+  sections.forEach(s => {
+    const h4 = s.querySelector('h4');
+    const items = s.querySelectorAll('li');
+    text += h4.textContent.toUpperCase() + ':\n';
+    items.forEach(li => { text += '- ' + li.textContent + '\n'; });
+    text += '\n';
+  });
+  text += 'DISCLAIMER: Nobody has ever centered the div. The counter reads 0. It will always read 0. Your drink is safe. Probably.\n';
+  text += 'center-this-div.vercel.app / RAXXO Studios';
+  copyToClipboard(text, btn);
+}
+
+// ===== TIMELINE PERSISTENCE =====
+const STORAGE_KEY = 'ctd-campaign-';
+const totalSteps = document.querySelectorAll('.timeline-item').length;
+
+function updateProgress() {
+  const done = document.querySelectorAll('.timeline-item.done').length;
+  const pct = totalSteps > 0 ? Math.round((done / totalSteps) * 100) : 0;
+  const fill = document.getElementById('progressFill');
+  const label = document.getElementById('progressLabel');
+  if (fill) fill.style.width = pct + '%';
+  if (label) label.textContent = done + ' / ' + totalSteps;
+}
+
+document.querySelectorAll('.timeline-item').forEach(item => {
+  const step = item.getAttribute('data-step');
+  const key = STORAGE_KEY + step;
+
+  if (localStorage.getItem(key) === 'done') {
+    item.classList.add('done');
+  }
+
+  item.addEventListener('click', () => {
+    item.classList.toggle('done');
+    if (item.classList.contains('done')) {
+      localStorage.setItem(key, 'done');
+    } else {
+      localStorage.removeItem(key);
+    }
+    updateProgress();
+  });
+});
+
+updateProgress();
+
+// ===== SMOOTH SCROLL FOR NAV =====
+document.querySelectorAll('.nav-link').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(link.getAttribute('href'));
+    if (target) {
+      const offset = document.querySelector('.nav-bar').offsetHeight + 16;
+      const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>
