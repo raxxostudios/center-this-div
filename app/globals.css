@@ -1248,7 +1248,7 @@ h1.nav-title,
 .more-label {
   font-family: var(--mono);
   font-size: 10px;
-  color: var(--text-4);
+  color: var(--text-2);
   text-transform: uppercase;
   letter-spacing: 1px;
   white-space: nowrap;
@@ -1282,8 +1282,7 @@ h1.nav-title,
 
 .more-tag {
   font-size: 10px;
-  color: var(--text-4);
-  opacity: 0.7;
+  color: var(--text-2);
 }
 
 /* ---- 418 Teapot Easter Egg ---- */
