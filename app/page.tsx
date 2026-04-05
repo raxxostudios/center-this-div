@@ -1351,7 +1351,7 @@ export default function CenterDivChallenge() {
           <div className="panel-card panel-3d-right">
             <h3 className="panel-heading">
               <Trophy size={14} weight="fill" />
-              GLOBAL LEADERBOARD
+              CLOSEST ATTEMPTS
             </h3>
             <div className="leader-list">
               {game.leaderboard.length === 0 && (
@@ -1361,6 +1361,21 @@ export default function CenterDivChallenge() {
                 <LeaderRow key={entry.rank} entry={entry} />
               ))}
             </div>
+            {game.globalStats.totalAttempts > 0 && (
+              <div className="leader-motivation">
+                {(() => {
+                  const pb = getPersonalBest();
+                  if (!pb) return `${game.globalStats.totalAttempts.toLocaleString()} attempts. 0 wins. Be the first.`;
+                  const pct = game.leaderboard.length > 0
+                    ? ((game.leaderboard.filter(e => e.deviation < pb).length / game.leaderboard.length) * 100)
+                    : 0;
+                  if (pb < 0.1) return `Your PB: ${pb.toFixed(4)}px. You're closer than most will ever get.`;
+                  if (pb < 1) return `Your PB: ${pb.toFixed(4)}px. Sub-pixel club. Keep pushing.`;
+                  if (pb < 10) return `Your PB: ${pb.toFixed(2)}px. The top 10 is ${game.leaderboard[9]?.deviation.toFixed(4) || '?'}px away.`;
+                  return `${game.globalStats.totalAttempts.toLocaleString()} attempts. 0 wins. Think you can do better?`;
+                })()}
+              </div>
+            )}
           </div>
 
           <div className="panel-card panel-3d-right">
