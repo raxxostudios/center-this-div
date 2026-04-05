@@ -960,12 +960,19 @@ export default function CenterDivChallenge() {
   const color = deviationColor(game.totalDeviation);
   const [lightMode, setLightMode] = useState(false);
   const [teapot, setTeapot] = useState(false);
-  const [raxxoProducts, setRaxxoProducts] = useState<{label:string;tag:string;href:string}[]>([]);
+  const fallbackProducts = [
+    { label: 'RAXXO Studio', tag: 'Free', href: 'https://raxxo.shop/pages/studio' },
+    { label: 'Claude Blueprint', tag: '33 EUR', href: 'https://raxxo.shop/pages/claude-blueprint' },
+    { label: 'Git Dojo', tag: '5 EUR', href: 'https://raxxo.shop/pages/git-dojo' },
+    { label: 'OhNine', tag: '9 EUR', href: 'https://raxxo.shop/pages/ohnine' },
+    { label: 'Blog', tag: 'Free', href: 'https://raxxo.shop/blogs/lab' },
+  ];
+  const [raxxoProducts, setRaxxoProducts] = useState<{label:string;tag:string;href:string}[]>(fallbackProducts);
 
   useEffect(() => {
     fetch('https://studio.raxxo.shop/api/products.json')
       .then(r => r.json())
-      .then(setRaxxoProducts)
+      .then(data => { if (Array.isArray(data) && data.length) setRaxxoProducts(data); })
       .catch(() => {});
   }, []);
   const teapotClicks = useRef(0);
