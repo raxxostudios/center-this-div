@@ -960,6 +960,14 @@ export default function CenterDivChallenge() {
   const color = deviationColor(game.totalDeviation);
   const [lightMode, setLightMode] = useState(false);
   const [teapot, setTeapot] = useState(false);
+  const [raxxoProducts, setRaxxoProducts] = useState<{label:string;tag:string;href:string}[]>([]);
+
+  useEffect(() => {
+    fetch('https://studio.raxxo.shop/api/products.json')
+      .then(r => r.json())
+      .then(setRaxxoProducts)
+      .catch(() => {});
+  }, []);
   const teapotClicks = useRef(0);
 
   useEffect(() => {
@@ -1301,27 +1309,19 @@ export default function CenterDivChallenge() {
       </div>
 
       {/* MORE FROM RAXXO */}
-      <div className="more-from-raxxo">
-        <span className="more-label">More from RAXXO</span>
-        <div className="more-links">
-          <a href="https://raxxo.shop/pages/claude-blueprint" target="_blank" rel="noopener noreferrer" className="more-link">
-            Claude Blueprint
-            <span className="more-tag">33 EUR</span>
-          </a>
-          <a href="https://raxxo.shop/pages/git-dojo" target="_blank" rel="noopener noreferrer" className="more-link">
-            Git Dojo
-            <span className="more-tag">5 EUR</span>
-          </a>
-          <a href="https://raxxo.shop/pages/ohnine" target="_blank" rel="noopener noreferrer" className="more-link">
-            OhNine
-            <span className="more-tag">9 EUR</span>
-          </a>
-          <a href="https://raxxo.shop/blogs/lab" target="_blank" rel="noopener noreferrer" className="more-link">
-            Blog
-            <span className="more-tag">Free</span>
-          </a>
+      {raxxoProducts.length > 0 && (
+        <div className="more-from-raxxo">
+          <span className="more-label">More from RAXXO</span>
+          <div className="more-links">
+            {raxxoProducts.map(p => (
+              <a key={p.label} href={p.href} target="_blank" rel="noopener noreferrer" className="more-link">
+                {p.label}
+                <span className="more-tag">{p.tag}</span>
+              </a>
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
       {/* FOOTER */}
       <footer className="footer-line">
