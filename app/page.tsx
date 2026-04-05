@@ -1364,7 +1364,7 @@ export default function CenterDivChallenge() {
           <div className="panel-card panel-3d-right">
             <h3 className="panel-heading">
               <Trophy size={14} weight="fill" />
-              PERCENTILE RANGES
+              ALL TIME STANDINGS
             </h3>
             <div className="leader-list">
               {game.percentiles.length === 0 && (

@@ -15,7 +15,7 @@ export async function GET() {
     }
 
     // Get percentile thresholds: top 1%, 5%, 10%, 25%, 50%, 90%
-    const pcts = [0.01, 0.05, 0.10, 0.25, 0.50, 0.90];
+    const pcts = [0.01, 0.05, 0.10, 0.25, 0.50];
     const percentiles = [];
 
     for (const pct of pcts) {
