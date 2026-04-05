@@ -345,7 +345,7 @@ function PercentileRow({ cluster }: { cluster: PercentileCluster }) {
   return (
     <div className="leader-row" style={{ borderLeft: `2px solid ${color}`, paddingLeft: 8 }}>
       <span className="leader-rank" style={{ color, minWidth: 52 }}>{cluster.label}</span>
-      <span className="leader-dev">~ {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
+      <span className="leader-dev">&le; {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
       <span className="leader-time" style={{ opacity: 0.5 }}>{cluster.count.toLocaleString()} entries</span>
     </div>
   );
@@ -1364,7 +1364,7 @@ export default function CenterDivChallenge() {
           <div className="panel-card panel-3d-right">
             <h3 className="panel-heading">
               <Trophy size={14} weight="fill" />
-              ALL TIME STANDINGS
+              ALL TIME LIVE STANDINGS
             </h3>
             <div className="leader-list">
               {game.percentiles.length === 0 && (
