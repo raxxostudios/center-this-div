@@ -24,6 +24,14 @@ export interface LeaderboardEntry {
   region: string;
 }
 
+export interface PercentileCluster {
+  label: string;
+  pct: number;
+  threshold: number;
+  count: number;
+  samples: { deviation: number; region: string; time: string }[];
+}
+
 export interface SubmitResult {
   rank: number;
   totalAttempts: number;
@@ -64,6 +72,8 @@ export interface CenterGameState {
   // Global stats
   globalStats: GlobalStats;
   leaderboard: LeaderboardEntry[];
+  percentiles: PercentileCluster[];
+  totalAttempts: number;
   // Actions
   handlePointerDown: (e: React.PointerEvent) => void;
   handlePointerMove: (e: React.PointerEvent) => void;
@@ -94,6 +104,8 @@ export function useCenterGame(): CenterGameState {
     recentAttempts: [],
   });
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
+  const [percentiles, setPercentiles] = useState<PercentileCluster[]>([]);
+  const [totalAttempts, setTotalAttempts] = useState(0);
 
   const targetRef = useRef<HTMLDivElement | null>(null);
   const divRef = useRef<HTMLDivElement | null>(null);
@@ -267,6 +279,8 @@ export function useCenterGame(): CenterGameState {
         const lbData = await lbRes.json();
         setGlobalStats(statsData);
         setLeaderboard(lbData.leaderboard || []);
+        setPercentiles(lbData.percentiles || []);
+        if (lbData.total) setTotalAttempts(lbData.total);
       } catch {
         // Silently fail
       }
@@ -370,6 +384,8 @@ export function useCenterGame(): CenterGameState {
     elapsedSeconds,
     globalStats,
     leaderboard,
+    percentiles,
+    totalAttempts,
     handlePointerDown,
     handlePointerMove,
     handlePointerUp,
