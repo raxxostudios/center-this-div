@@ -164,12 +164,27 @@ function generateShareCard(opts: {
     ctx.font = '500 28px "JetBrains Mono", monospace';
     ctx.fillText('PIXELS OFF CENTER', W / 2, 320);
 
+    // ── Tier badge ──
+    const cardTier = getTier(opts.deviation);
+    ctx.font = '700 16px "JetBrains Mono", monospace';
+    ctx.letterSpacing = '3px';
+    const tierText = cardTier.name.toUpperCase();
+    const tierW = ctx.measureText(tierText).width + 32;
+    ctx.strokeStyle = cardTier.color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.roundRect(W / 2 - tierW / 2, 332, tierW, 32, 9999); ctx.stroke();
+    ctx.fillStyle = cardTier.color;
+    ctx.textAlign = 'center';
+    ctx.fillText(tierText, W / 2, 354);
+    ctx.letterSpacing = '0px';
+    ctx.lineWidth = 0.5;
+
     // ── Divider ──
     ctx.strokeStyle = 'rgba(227,252,2,0.08)';
-    ctx.beginPath(); ctx.moveTo(P, 348); ctx.lineTo(W - P, 348); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(P, 378); ctx.lineTo(W - P, 378); ctx.stroke();
 
     // ── Stats row (2x2 grid, centered content) ──
-    const sY = 372;
+    const sY = 400;
     const sW = (W - P * 2 - 20) / 2;
     const sH = 100;
     const drawStat = (col: number, row: number, label: string, value: string, color?: string) => {
@@ -314,10 +329,12 @@ function PrecisionMeter({ deviation }: { deviation: number }) {
 /* ---- Leaderboard Row ---- */
 
 function LeaderRow({ entry }: { entry: LeaderboardEntry }) {
+  const tier = getTier(entry.deviation);
   return (
     <div className="leader-row">
       <span className="leader-rank">#{entry.rank}</span>
       <span className="leader-dev">{entry.deviation.toFixed(4)}px</span>
+      <span className="leader-tier" style={{ color: tier.color }}>{tier.name}</span>
       <span className="leader-time">{timeAgo(entry.time)}</span>
     </div>
   );
