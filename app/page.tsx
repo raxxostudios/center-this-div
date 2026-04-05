@@ -345,7 +345,7 @@ function PercentileRow({ cluster }: { cluster: PercentileCluster }) {
   return (
     <div className="leader-row" style={{ borderLeft: `2px solid ${color}`, paddingLeft: 8 }}>
       <span className="leader-rank" style={{ color, minWidth: 52 }}>{cluster.label}</span>
-      <span className="leader-dev">&le; {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
+      <span className="leader-dev">~ {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
       <span className="leader-time" style={{ opacity: 0.5 }}>{cluster.count.toLocaleString()} entries</span>
     </div>
   );
@@ -1374,27 +1374,16 @@ export default function CenterDivChallenge() {
                 <PercentileRow key={cluster.label} cluster={cluster} />
               ))}
             </div>
-            {game.totalAttempts > 0 && (() => {
+            {(() => {
               const pb = getPersonalBest();
               const total = game.totalAttempts;
-              const yourPct = pb && game.percentiles.length > 0
-                ? game.percentiles.find((c: PercentileCluster) => pb <= c.threshold)
-                : null;
+              if (!pb || total === 0) return null;
+              const yourPct = game.percentiles.find((c: PercentileCluster) => pb <= c.threshold);
+              const rank = yourPct ? Math.max(1, Math.round(total * yourPct.pct)) : total;
               return (
                 <div className="leader-context">
                   <div className="leader-ranges">
-                    {pb && <span className="leader-range leader-range-you"><span className="leader-range-label">You</span> {pb < 1 ? pb.toFixed(4) : pb.toFixed(2)}px {yourPct ? `(${yourPct.label})` : ''}</span>}
-                    <span className="leader-range"><span className="leader-range-label">Total</span> {total.toLocaleString()} attempts</span>
-                  </div>
-                  <div className="leader-motivation">
-                    {!pb
-                      ? `${total.toLocaleString()} attempts so far. Try yours.`
-                      : yourPct && yourPct.pct <= 0.01 ? `Top 1%. Closer than almost everyone.`
-                      : yourPct && yourPct.pct <= 0.05 ? `Top 5%. Sub-pixel territory.`
-                      : yourPct && yourPct.pct <= 0.10 ? `Top 10%. Keep pushing.`
-                      : yourPct && yourPct.pct <= 0.25 ? `Top 25%. Getting warm.`
-                      : `${total.toLocaleString()} tried. You can do better.`
-                    }
+                    <span className="leader-range leader-range-you"><span className="leader-range-label">You</span> #{rank.toLocaleString()} of {total.toLocaleString()} ({yourPct ? yourPct.label : 'Bottom 50%'})</span>
                   </div>
                 </div>
               );
@@ -1419,15 +1408,17 @@ export default function CenterDivChallenge() {
           <div className="panel-card panel-3d-right panel-card-highlight">
             <h3 className="panel-heading">
               <Crosshair size={14} weight="fill" />
-              GLOBAL RECORD
+              LAST 24H GLOBAL RECORD
             </h3>
             <div className="global-record">
               <span className="global-record-value">
-                {game.globalStats.bestDeviation < 900
+                {game.globalStats.best24h != null
+                  ? `${game.globalStats.best24h.toFixed(6)}px`
+                  : game.globalStats.bestDeviation < 900
                   ? `${game.globalStats.bestDeviation.toFixed(6)}px`
                   : '--'}
               </span>
-              <span className="global-record-label">closest attempt ever</span>
+              <span className="global-record-label">{game.globalStats.best24h != null ? 'closest in the last 24 hours' : 'closest attempt ever'}</span>
             </div>
           </div>
         </div>

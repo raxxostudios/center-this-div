@@ -62,7 +62,7 @@ export async function GET() {
       }
     }
 
-    return Response.json({ percentiles: clusters, total });
+    return Response.json({ percentiles: clusters, total, bestAllTime: clusters[0]?.samples?.[0]?.deviation ?? null });
   } catch (error) {
     console.error('Leaderboard error:', error);
     return Response.json({ percentiles: [], total: 0 });

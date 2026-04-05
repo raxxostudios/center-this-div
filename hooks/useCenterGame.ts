@@ -5,6 +5,7 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 export interface GlobalStats {
   totalAttempts: number;
   bestDeviation: number;
+  best24h: number | null;
   successes: number;
   recentAttempts: {
     deviation: number;
@@ -100,6 +101,7 @@ export function useCenterGame(): CenterGameState {
   const [globalStats, setGlobalStats] = useState<GlobalStats>({
     totalAttempts: 0,
     bestDeviation: 999,
+    best24h: null,
     successes: 0,
     recentAttempts: [],
   });
