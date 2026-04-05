@@ -329,12 +329,10 @@ function PrecisionMeter({ deviation }: { deviation: number }) {
 /* ---- Leaderboard Row ---- */
 
 function LeaderRow({ entry }: { entry: LeaderboardEntry }) {
-  const tier = getTier(entry.deviation);
   return (
     <div className="leader-row">
       <span className="leader-rank">#{entry.rank}</span>
       <span className="leader-dev">{entry.deviation.toFixed(4)}px</span>
-      <span className="leader-tier" style={{ color: tier.color }}>{tier.name}</span>
       <span className="leader-time">{timeAgo(entry.time)}</span>
     </div>
   );
