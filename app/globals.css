@@ -1122,6 +1122,9 @@ h1.nav-title,
 .leader-range-you {
   border-color: var(--accent);
   color: var(--accent);
+  width: 100%;
+  text-align: center;
+  justify-content: center;
 }
 
 .leader-range-you .leader-range-label {
