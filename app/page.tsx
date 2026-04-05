@@ -965,14 +965,24 @@ export default function CenterDivChallenge() {
     { label: 'Claude Blueprint', tag: '33 EUR', href: 'https://raxxo.shop/pages/claude-blueprint' },
     { label: 'Git Dojo', tag: '5 EUR', href: 'https://raxxo.shop/pages/git-dojo' },
     { label: 'OhNine', tag: '9 EUR', href: 'https://raxxo.shop/pages/ohnine' },
+    { label: 'FULLMOON', tag: '49 EUR', href: 'https://raxxo.shop/pages/fullmoon' },
     { label: 'Blog', tag: 'Free', href: 'https://raxxo.shop/blogs/lab' },
   ];
-  const [raxxoProducts, setRaxxoProducts] = useState<{label:string;tag:string;href:string}[]>(fallbackProducts);
+  const [allProducts, setAllProducts] = useState(fallbackProducts);
+  const raxxoProducts = useMemo(() => {
+    const filtered = allProducts.filter(p => p.label !== 'Center This Div');
+    const shuffled = [...filtered];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled.slice(0, 4);
+  }, [allProducts]);
 
   useEffect(() => {
     fetch('https://studio.raxxo.shop/api/products.json')
       .then(r => r.json())
-      .then(data => { if (Array.isArray(data) && data.length) setRaxxoProducts(data); })
+      .then(data => { if (Array.isArray(data) && data.length) setAllProducts(data); })
       .catch(() => {});
   }, []);
   const teapotClicks = useRef(0);
