@@ -1097,9 +1097,11 @@ h1.nav-title,
   color: var(--accent);
   opacity: 0.7;
   text-align: center;
-  padding: 8px 0 0;
+  padding: 8px 4px 4px;
   border-top: 1px solid var(--border);
   margin-top: 6px;
+  line-height: 1.4;
+  word-break: break-word;
 }
 
 .leader-time {
