@@ -980,7 +980,7 @@ export default function CenterDivChallenge() {
   }, [allProducts]);
 
   useEffect(() => {
-    fetch('https://studio.raxxo.shop/api/products.json')
+    fetch('https://studio.raxxo.shop/data/products.json')
       .then(r => r.json())
       .then(data => { if (Array.isArray(data) && data.length) setAllProducts(data); })
       .catch(() => {});
