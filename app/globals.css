@@ -1091,15 +1091,49 @@ h1.nav-title,
   flex: 1;
 }
 
+.leader-context {
+  border-top: 1px solid var(--border);
+  margin-top: 6px;
+  padding: 8px 0 4px;
+}
+
+.leader-ranges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 6px;
+}
+
+.leader-range {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-3);
+  padding: 2px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.leader-range-label {
+  color: var(--text-2);
+  margin-right: 4px;
+  font-weight: 600;
+}
+
+.leader-range-you {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.leader-range-you .leader-range-label {
+  color: var(--accent);
+}
+
 .leader-motivation {
   font-family: var(--mono);
   font-size: 10px;
   color: var(--accent);
   opacity: 0.7;
   text-align: center;
-  padding: 8px 4px 4px;
-  border-top: 1px solid var(--border);
-  margin-top: 6px;
   line-height: 1.4;
   word-break: break-word;
 }

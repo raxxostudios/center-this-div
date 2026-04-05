@@ -1361,21 +1361,31 @@ export default function CenterDivChallenge() {
                 <LeaderRow key={entry.rank} entry={entry} />
               ))}
             </div>
-            {game.globalStats.totalAttempts > 0 && (
-              <div className="leader-motivation">
-                {(() => {
-                  const pb = getPersonalBest();
-                  if (!pb) return `${game.globalStats.totalAttempts.toLocaleString()} attempts. 0 wins. Be the first.`;
-                  const pct = game.leaderboard.length > 0
-                    ? ((game.leaderboard.filter(e => e.deviation < pb).length / game.leaderboard.length) * 100)
-                    : 0;
-                  if (pb < 0.1) return `Your PB: ${pb.toFixed(4)}px. You're closer than most will ever get.`;
-                  if (pb < 1) return `Your PB: ${pb.toFixed(4)}px. Sub-pixel club. Keep pushing.`;
-                  if (pb < 10) return `Your PB: ${pb.toFixed(2)}px. The top 10 is ${game.leaderboard[9]?.deviation.toFixed(4) || '?'}px away.`;
-                  return `${game.globalStats.totalAttempts.toLocaleString()} attempts. 0 wins. Think you can do better?`;
-                })()}
-              </div>
-            )}
+            {game.globalStats.totalAttempts > 0 && (() => {
+              const lb = game.leaderboard;
+              const total = game.globalStats.totalAttempts;
+              const pb = getPersonalBest();
+              const top10Max = lb[Math.min(9, lb.length - 1)]?.deviation;
+              const top50Max = lb[Math.min(49, lb.length - 1)]?.deviation;
+              return (
+                <div className="leader-context">
+                  <div className="leader-ranges">
+                    {top10Max != null && <span className="leader-range"><span className="leader-range-label">Top 10</span> {lb[0]?.deviation.toFixed(3)}-{top10Max.toFixed(3)}px</span>}
+                    {top50Max != null && top50Max !== top10Max && <span className="leader-range"><span className="leader-range-label">Top 50</span> {(top10Max ?? 0).toFixed(3)}-{top50Max.toFixed(3)}px</span>}
+                    {pb && <span className="leader-range leader-range-you"><span className="leader-range-label">You</span> {pb < 1 ? pb.toFixed(4) : pb.toFixed(2)}px</span>}
+                  </div>
+                  <div className="leader-motivation">
+                    {!pb
+                      ? `${total.toLocaleString()} attempts. 0 wins. Be the first.`
+                      : pb < 0.1 ? `Closer than most will ever get.`
+                      : pb < 1 ? `Sub-pixel club. Keep pushing.`
+                      : pb < 10 ? `Top 10 is ${top10Max?.toFixed(4) || '?'}px. You can get there.`
+                      : `${total.toLocaleString()} tried. You can do better.`
+                    }
+                  </div>
+                </div>
+              );
+            })()}
           </div>
 
           <div className="panel-card panel-3d-right">
