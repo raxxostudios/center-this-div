@@ -1089,7 +1089,7 @@ h1.nav-title,
 
 .leader-dev {
   color: var(--text);
-  margin-left: auto;
+  flex: 1;
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
@@ -1147,6 +1147,10 @@ h1.nav-title,
 .leader-time {
   color: var(--text-3);
   font-size: 9px;
+  min-width: 70px;
+  text-align: right;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Recent attempts feed */
