@@ -211,7 +211,7 @@ function generateShareCard(opts: {
 
     drawStat(0, 0, 'X OFFSET', `${opts.deviationX > 0 ? '+' : ''}${opts.deviationX.toFixed(2)}px`);
     drawStat(1, 0, 'Y OFFSET', `${opts.deviationY > 0 ? '+' : ''}${opts.deviationY.toFixed(2)}px`);
-    drawStat(0, 1, 'GLOBAL RANK', `#${opts.rank} of ${opts.totalAttempts.toLocaleString()}`);
+    drawStat(0, 1, 'GLOBAL RANK', `#${opts.rank} of ${opts.totalAttempts.toLocaleString('en-US')}`);
     drawStat(1, 1, 'PERCENTILE', `Top ${100 - opts.percentile}%`, '#e3fc02');
 
     // ── Earth scale ──
@@ -343,10 +343,9 @@ function LeaderRow({ entry }: { entry: LeaderboardEntry }) {
 function PercentileRow({ cluster }: { cluster: PercentileCluster }) {
   const color = cluster.pct <= 0.01 ? '#e3fc02' : cluster.pct <= 0.05 ? '#00FCED' : cluster.pct <= 0.10 ? '#22c55e' : cluster.pct <= 0.25 ? '#FF6B00' : cluster.pct <= 0.50 ? '#FF0079' : 'rgba(245,245,247,0.4)';
   return (
-    <div className="leader-row" style={{ borderLeft: `2px solid ${color}`, paddingLeft: 8 }}>
+    <div className="leader-row" style={{ borderLeftColor: color }}>
       <span className="leader-rank" style={{ color, minWidth: 52 }}>{cluster.label}</span>
       <span className="leader-dev">&le; {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
-      <span className="leader-time" style={{ opacity: 0.5 }}>{cluster.count.toLocaleString()} entries</span>
     </div>
   );
 }
@@ -1113,7 +1112,7 @@ export default function CenterDivChallenge() {
         <div className="nav-center-stats">
           <span className="nav-stat">
             <Users size={13} weight="fill" />
-            {game.globalStats.totalAttempts.toLocaleString()} attempts
+            {game.globalStats.totalAttempts.toLocaleString('en-US')} attempts
           </span>
           <span className="nav-stat nav-stat-fail teapot-trigger" onClick={handleTeapotClick}>
             Successes: <strong>0</strong>
@@ -1376,14 +1375,14 @@ export default function CenterDivChallenge() {
             </div>
             {(() => {
               const pb = getPersonalBest();
-              const total = game.totalAttempts;
+              const total = game.globalStats.totalAttempts || game.totalAttempts;
               if (!pb || total === 0) return null;
               const yourPct = game.percentiles.find((c: PercentileCluster) => pb <= c.threshold);
               const rank = yourPct ? Math.max(1, Math.round(total * yourPct.pct)) : total;
               return (
                 <div className="leader-context">
                   <div className="leader-ranges">
-                    <span className="leader-range leader-range-you"><span className="leader-range-label">You</span> #{rank.toLocaleString()} of {total.toLocaleString()} ({yourPct ? yourPct.label : 'Bottom 50%'})</span>
+                    <span className="leader-range leader-range-you"><span className="leader-range-label">You</span> #{rank.toLocaleString('en-US')} of {total.toLocaleString('en-US')} ({yourPct ? yourPct.label : 'Bottom 50%'})</span>
                   </div>
                 </div>
               );

@@ -75,6 +75,34 @@ export async function GET() {
     `;
     totalNuked += axisNuked.length;
 
+    // 5. Nuke suspiciously round decimal values that aren't binary fractions
+    // Real getBoundingClientRect() returns binary fractions (k/2^n) like 3.7265625, 0.046875
+    // These are messy in decimal. Fabricated values are clean decimals: 0.02, 0.05, 0.030, etc.
+    // Check: if deviation is exact to 3 decimal places BUT not a binary fraction (not exact at 2^16), it's fake
+    const roundNuked = await sql`
+      DELETE FROM center_attempts
+      WHERE deviation_px < 0.5
+        AND deviation_px > 0
+        AND ABS(deviation_px * 1000 - ROUND(deviation_px * 1000)) < 0.0001
+        AND ABS(deviation_px * 65536 - ROUND(deviation_px * 65536)) > 0.01
+      RETURNING id
+    `;
+    totalNuked += roundNuked.length;
+
+    // 6. Nuke entries where ALL of deviation, x, and y are exact to 4 decimal places (but deviation is not a binary fraction)
+    // Catches slightly less obvious fakes like 0.0214, 0.0300, etc.
+    const allRoundNuked = await sql`
+      DELETE FROM center_attempts
+      WHERE deviation_px < 1.0
+        AND deviation_px > 0
+        AND ABS(deviation_px * 10000 - ROUND(deviation_px * 10000)) < 0.0001
+        AND ABS(deviation_x * 10000 - ROUND(deviation_x * 10000)) < 0.0001
+        AND ABS(deviation_y * 10000 - ROUND(deviation_y * 10000)) < 0.0001
+        AND ABS(deviation_px * 65536 - ROUND(deviation_px * 65536)) > 0.01
+      RETURNING id
+    `;
+    totalNuked += allRoundNuked.length;
+
     // Update best_deviation if we cleaned anything
     if (totalNuked > 0) {
       const best = await sql`SELECT MIN(deviation_px) as best FROM center_attempts`;
@@ -91,6 +119,8 @@ export async function GET() {
       hogs: hogIds.length,
       eliteExcess: eliteExcess.length,
       axisZero: axisNuked.length,
+      roundDecimals: roundNuked.length,
+      allRoundAxes: allRoundNuked.length,
       threshold: HUMAN_FLOOR,
     });
   } catch (error) {
