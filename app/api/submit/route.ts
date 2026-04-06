@@ -118,8 +118,8 @@ export async function POST(req: Request) {
     }
 
     // Anti-cheat: reject suspiciously round deviations
-    // Real browser getBoundingClientRect produces messy floating point (e.g. 3.7265625)
-    // Fabricated values are typically round numbers (0.01, 0.1, 1.0, etc.)
+    // Real browser getBoundingClientRect produces binary fractions (k/2^n) like 3.7265625, 0.048828125
+    // Fabricated values are clean decimal numbers: 0.02, 0.05, 0.030, etc.
     const devStr = deviation.toFixed(10);
     const xStr = Math.abs(deviationX).toFixed(10);
     const yStr = Math.abs(deviationY).toFixed(10);
@@ -135,10 +135,39 @@ export async function POST(req: Request) {
       return count;
     };
 
+    // Check if a value is a clean binary fraction (exact at 2^16 resolution)
+    // Real getBoundingClientRect values are always k/2^n, so value * 65536 should be near-integer
+    const isBinaryFraction = (v: number) => Math.abs(v * 65536 - Math.round(v * 65536)) < 0.01;
+    // Check if a value is a clean decimal (exact to N decimal places)
+    const isCleanDecimal = (v: number, places: number) => {
+      const mult = Math.pow(10, places);
+      return Math.abs(v * mult - Math.round(v * mult)) < 0.0001;
+    };
+
+    // Reject clean decimal deviations that aren't binary fractions
+    // e.g., 0.02 (1310.72 at 2^16, not integer) vs 0.0625 (4096 at 2^16, integer)
+    if (deviation < 0.5 && isCleanDecimal(deviation, 3) && !isBinaryFraction(deviation)) {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
+      return Response.json(
+        { error: "Those numbers look a little too round. Browsers are messier than that.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { status: 418 }
+      );
+    }
+
     // If Euclidean distance has 5+ trailing zeros AND both axes are suspiciously clean, it's fabricated
-    // Real values from getBoundingClientRect: 3.7265625, 0.048828125, 12.34375 (binary fractions)
     // Fabricated: 0.01000000, 0.10000000, 1.00000000
     if (trailingZeros(devStr) >= 5 && trailingZeros(xStr) >= 5 && trailingZeros(yStr) >= 5 && deviation < 1.0) {
+      addStrike(ip, now);
+      const s = strikes.get(ip);
+      return Response.json(
+        { error: "Those numbers look a little too round. Browsers are messier than that.", teapot: true, strike: s?.count || 1, maxStrikes: MAX_STRIKES },
+        { status: 418 }
+      );
+    }
+
+    // Reject when all three values are exact to 4 decimal places but deviation isn't a binary fraction
+    if (deviation < 1.0 && isCleanDecimal(deviation, 4) && isCleanDecimal(Math.abs(deviationX), 4) && isCleanDecimal(Math.abs(deviationY), 4) && !isBinaryFraction(deviation)) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
