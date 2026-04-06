@@ -346,6 +346,7 @@ function PercentileRow({ cluster }: { cluster: PercentileCluster }) {
     <div className="leader-row" style={{ borderLeftColor: color }}>
       <span className="leader-rank" style={{ color, minWidth: 52 }}>{cluster.label}</span>
       <span className="leader-dev">&le; {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
+      <span className="leader-time" style={{ opacity: 0.5 }}>{cluster.count.toLocaleString('en-US')} entries</span>
     </div>
   );
 }
