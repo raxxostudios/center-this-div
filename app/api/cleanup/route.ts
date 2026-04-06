@@ -24,7 +24,7 @@ export async function GET() {
     // 1. Nuke entries below human floor
     const floorNuked = await sql`
       DELETE FROM center_attempts
-      WHERE deviation_px < ${HUMAN_FLOOR}
+      WHERE deviation_px <= ${HUMAN_FLOOR}
       RETURNING id
     `;
     totalNuked += floorNuked.length;
