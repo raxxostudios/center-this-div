@@ -108,7 +108,7 @@ export async function POST(req: Request) {
     }
 
     // Anti-cheat: reject below human floor (0.02px is below what pointer events can produce)
-    if (deviation <= 0.02) {
+    if (deviation < 0.02) {
       addStrike(ip, now);
       const s = strikes.get(ip);
       return Response.json(
