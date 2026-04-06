@@ -1067,11 +1067,12 @@ h1.nav-title,
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 4px 6px;
+  padding: 6px 8px;
   border-radius: 6px;
   font-family: var(--mono);
   font-size: 11px;
   transition: background 0.15s;
+  border-left: 2px solid transparent;
 }
 
 .leader-row:hover {
@@ -1081,14 +1082,16 @@ h1.nav-title,
 .leader-rank {
   color: var(--accent);
   font-weight: 700;
-  width: 24px;
+  min-width: 52px;
   flex-shrink: 0;
   text-shadow: 0 0 6px rgba(227, 252, 2, 0.2);
 }
 
 .leader-dev {
   color: var(--text);
-  flex: 1;
+  margin-left: auto;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
 }
 
 .leader-context {

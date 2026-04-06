@@ -343,10 +343,9 @@ function LeaderRow({ entry }: { entry: LeaderboardEntry }) {
 function PercentileRow({ cluster }: { cluster: PercentileCluster }) {
   const color = cluster.pct <= 0.01 ? '#e3fc02' : cluster.pct <= 0.05 ? '#00FCED' : cluster.pct <= 0.10 ? '#22c55e' : cluster.pct <= 0.25 ? '#FF6B00' : cluster.pct <= 0.50 ? '#FF0079' : 'rgba(245,245,247,0.4)';
   return (
-    <div className="leader-row" style={{ borderLeft: `2px solid ${color}`, paddingLeft: 8 }}>
+    <div className="leader-row" style={{ borderLeftColor: color }}>
       <span className="leader-rank" style={{ color, minWidth: 52 }}>{cluster.label}</span>
       <span className="leader-dev">&le; {cluster.threshold < 1 ? cluster.threshold.toFixed(4) : cluster.threshold.toFixed(2)}px</span>
-      <span className="leader-time" style={{ opacity: 0.5 }}>{cluster.count.toLocaleString('en-US')} entries</span>
     </div>
   );
 }
