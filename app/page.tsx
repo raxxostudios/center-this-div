@@ -1047,7 +1047,7 @@ export default function CenterDivChallenge() {
     { label: 'RAXXO Studio', tag: 'Free', href: 'https://raxxo.shop/pages/studio' },
     { label: 'Claude Blueprint', tag: '33 EUR', href: 'https://raxxo.shop/pages/claude-blueprint' },
     { label: 'Git Dojo', tag: '5 EUR', href: 'https://raxxo.shop/pages/git-dojo' },
-    { label: 'OhNine', tag: '9 EUR', href: 'https://raxxo.shop/pages/ohnine' },
+    { label: 'OhNine', tag: 'Free', href: 'https://raxxo.shop/pages/ohnine' },
     { label: 'FULLMOON', tag: '49 EUR', href: 'https://raxxo.shop/pages/fullmoon' },
     { label: 'Blog', tag: 'Free', href: 'https://raxxo.shop/blogs/lab' },
   ];
