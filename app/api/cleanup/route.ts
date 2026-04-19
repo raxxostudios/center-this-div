@@ -2,7 +2,7 @@ import { getDb } from '@/lib/db';
 import { headers } from 'next/headers';
 
 // Auto-cleanup: nuke cheaters, brute-forcers, and impossible entries
-// Runs via Vercel cron every 10 minutes (Pro plan)
+// Runs via Vercel cron once daily at 00:00 UTC
 
 const HUMAN_FLOOR = 0.02;
 const MAX_TOP_ENTRIES_PER_UA = 3;   // No single UA can hold more than 3 spots in top 50
