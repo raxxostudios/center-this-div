@@ -81,7 +81,6 @@ export interface CenterGameState {
   handlePointerUp: () => void;
   submitAttempt: () => void;
   resetAttempt: () => void;
-  generateShareText: () => string;
 }
 
 export function useCenterGame(): CenterGameState {
@@ -261,17 +260,6 @@ export function useCenterGame(): CenterGameState {
     }
   }, [updateDeviation]);
 
-  // Generate share text
-  const generateShareText = useCallback(() => {
-    const dev = totalDeviation.toFixed(6);
-    // Precision meter rather than an emoji: monochrome, renders identically in
-    // every client, and carries the same at-a-glance signal without handing the
-    // look of the share card over to whichever emoji font the reader has.
-    const meter = totalDeviation < 1 ? '▓▓▓▓▓' : totalDeviation < 5 ? '▓▓▓░░' : '▓░░░░';
-    const url = typeof window !== 'undefined' ? window.location.origin : 'https://center-this-div.vercel.app';
-    return `${meter} I got ${dev}px from center in "Can You Center This Div?"\n\nAttempt #${attemptCount} | Best: ${bestThisSession.toFixed(6)}px\nGlobal successes: 0. Ever.\n\n${url}`;
-  }, [totalDeviation, attemptCount, bestThisSession]);
-
   // Poll global stats every 15 seconds (saves Neon transfer bandwidth)
   useEffect(() => {
     const fetchStats = async () => {
@@ -396,6 +384,5 @@ export function useCenterGame(): CenterGameState {
     handlePointerUp,
     submitAttempt,
     resetAttempt,
-    generateShareText,
   };
 }
