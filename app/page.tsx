@@ -1045,10 +1045,10 @@ export default function CenterDivChallenge() {
   const [teapot, setTeapot] = useState(false);
   const fallbackProducts = [
     { label: 'RAXXO Studio', tag: 'Free', href: 'https://raxxo.shop/pages/studio' },
-    { label: 'Claude Blueprint', tag: '33 EUR', href: 'https://raxxo.shop/pages/claude-blueprint' },
-    { label: 'Git Dojo', tag: '5 EUR', href: 'https://raxxo.shop/pages/git-dojo' },
+    { label: 'Claude Blueprint', tag: '49 EUR', href: 'https://raxxo.shop/pages/claude-blueprint' },
+    { label: 'Git Dojo', tag: '9 EUR', href: 'https://raxxo.shop/pages/git-dojo' },
     { label: 'OhNine', tag: 'Free', href: 'https://raxxo.shop/pages/ohnine' },
-    { label: 'FULLMOON', tag: '49 EUR', href: 'https://raxxo.shop/pages/fullmoon' },
+    { label: 'FULLMOON', tag: '89 EUR', href: 'https://raxxo.shop/pages/fullmoon' },
     { label: 'Blog', tag: 'Free', href: 'https://raxxo.shop/blogs/lab' },
   ];
   const [allProducts, setAllProducts] = useState(fallbackProducts);
