@@ -1053,7 +1053,12 @@ export default function CenterDivChallenge() {
   ];
   const [allProducts, setAllProducts] = useState(fallbackProducts);
   const raxxoProducts = useMemo(() => {
-    const filtered = allProducts.filter(p => p.label !== 'Center This Div');
+    // Center This Div is this page. Million Token Homepage is hidden on the shop
+    // itself (snippets/rx-tile.liquid drops it: "should not be a thing"), so the
+    // game must not be the one surface still advertising it, least of all in a
+    // screenshot that is mounted on raxxo.shop as a product hero. 2026-08-30.
+    const HIDDEN = ['Center This Div', 'Million Token Homepage'];
+    const filtered = allProducts.filter(p => !HIDDEN.includes(p.label));
     const shuffled = [...filtered];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
