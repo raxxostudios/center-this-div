@@ -1044,7 +1044,7 @@ export default function CenterDivChallenge() {
   const [lightMode, setLightMode] = useState(false);
   const [teapot, setTeapot] = useState(false);
   const fallbackProducts = [
-    { label: 'RAXXO Studio', tag: 'Free', href: 'https://raxxo.shop/pages/studio' },
+    { label: 'NIGHTMILE', tag: 'Free', href: 'https://raxxo.shop/pages/nightmile' },
     { label: 'Claude Blueprint', tag: '49 EUR', href: 'https://raxxo.shop/pages/claude-blueprint' },
     { label: 'Git Dojo', tag: '9 EUR', href: 'https://raxxo.shop/pages/git-dojo' },
     { label: 'OhNine', tag: 'Free', href: 'https://raxxo.shop/pages/ohnine' },
